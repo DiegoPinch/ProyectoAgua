@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var express_1 = require("express");
+var persona_controller_1 = require("../controllers/persona.controller");
+var router = (0, express_1.Router)();
+router.get('/personaPasivos', persona_controller_1.getPersonaPasiva);
+router.get('/', persona_controller_1.getPersonas);
+router.get('/:id', persona_controller_1.getPersona);
+router.delete('/:id', persona_controller_1.deletePersona);
+router.post('/', persona_controller_1.postPersona);
+router.put('/:id', persona_controller_1.putPersona);
+router.put('/eliminar/:id', persona_controller_1.eliminarPersona);
+router.put('/reingreso/:id', persona_controller_1.reingresoPersona);
+exports.default = router;

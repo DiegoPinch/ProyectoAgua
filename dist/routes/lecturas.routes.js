@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var express_1 = require("express");
+var lecturas_controller_1 = require("../controllers/lecturas.controller");
+var router = (0, express_1.Router)();
+router.get('/ingresolectura/:id', lecturas_controller_1.getLecturaIngreso);
+router.get('/ultimalectura/:id', lecturas_controller_1.getUltimaLectura);
+router.get('/verificarlectura/:mes/:id', lecturas_controller_1.verificarLectura);
+router.get('/:cedula/:tipo/:mes', lecturas_controller_1.getLecturaActual);
+router.put('/:lectura/:id', lecturas_controller_1.putLectura);
+router.get('/:tipo/:mes', lecturas_controller_1.getLectura);
+router.get('/:tipo', lecturas_controller_1.getPersonaMedidor);
+router.post('/', lecturas_controller_1.postLecturas);
+exports.default = router;

@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var express_1 = require("express");
+var medidor_controller_1 = require("../controllers/medidor.controller");
+var router = (0, express_1.Router)();
+router.get('/:cedula/:tipo/:mes', medidor_controller_1.getLecturaActual);
+router.put('/:lectura/:id', medidor_controller_1.putLectura);
+router.get('/:tipo/:mes', medidor_controller_1.getLectura);
+router.get('/:tipo', medidor_controller_1.getPersonaMedidor);
+router.post('/', medidor_controller_1.postLecturas);
+exports.default = router;

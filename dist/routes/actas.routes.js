@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var express_1 = require("express");
+var actas_controller_1 = require("../controllers/actas.controller");
+var router = (0, express_1.Router)();
+router.get('/', actas_controller_1.getActas);
+router.post('/', actas_controller_1.postActas);
+router.delete('/:id', actas_controller_1.deleteActa);
+//router.put('/:id', putPersona);
+exports.default = router;
