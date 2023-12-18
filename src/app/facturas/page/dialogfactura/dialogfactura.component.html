@@ -1,0 +1,33 @@
+<!-- Tu componente HTML -->
+<div class="contenedor">
+  <h1>{{ nombre + ' ' + apellido }}</h1>
+</div>
+<div fxLayout="row" fxLayout.lt-md="column" fxLayoutWrap class="container">
+  <div class="left-half">
+    <!-- Contenido de la tabla -->
+    <div fxLayout fxLayoutAlign="center" class="container">
+      <mat-card fxFlex="1 1 95%" class="mat-elevation-z15">
+        <gst-table [data]="datas" [metaDataColumns]="filtrarMetaColumnas(metaDataColumns)" (actionClicked)="ejecutarAccion($event.accion, $event.rowData)"></gst-table>
+
+      </mat-card>
+    </div>
+
+  </div>
+  <div class="divider"></div>
+  <div class="right-half">
+    <!-- Contenido de la segunda mitad: carrito -->
+    <mat-list role="list">
+      <mat-list-item role="listitem" *ngFor="let fila of filasSeleccionadas" (click)="eliminarDelCarrito(fila)">
+        <div class="mat-list-item-content">
+          {{ fila.ID_FACT }} - {{ fila.TIPO_MED }} - {{ fila.MES_CON }} -{{ fila.SUM_TOTAL}}
+        </div>
+      </mat-list-item>
+    </mat-list>
+    <h2>Total del Carrito: ${{ totalCarrito }}</h2>
+    
+    <div class="boton-cobrar-container">
+      <button mat-raised-button color="accent" (click)="cobrar()" [disabled]="totalCarrito === 0">Cobrar</button>
+    </div>
+
+  </div>
+</div>

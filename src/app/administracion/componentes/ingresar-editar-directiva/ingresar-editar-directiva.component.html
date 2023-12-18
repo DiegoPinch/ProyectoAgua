@@ -1,0 +1,52 @@
+<!-- app.component.html -->
+<form [formGroup]="form" (ngSubmit)="addEditDirectiva()" class="formulario">
+    <h2 mat-dialog-title>Agregar Directiva</h2>
+    <mat-dialog-content class="mat-typography">
+        <div class="columnas">
+            <div class="columna">
+                <mat-form-field appearance="fill">
+                    <mat-label>ID</mat-label>
+                    <input formControlName="ID_DIR_DET" matInput placeholder="Ingrese el ID" autocomplete="off">
+                </mat-form-field>
+                <!-- Validaciones de cedula -->
+                <!-- ... -->
+            </div>
+            <div class="columna">
+                <mat-form-field appearance="fill">
+                    <mat-label>Cedula</mat-label>
+                    <input formControlName="CED_USU_DIR" matInput placeholder="Ingrese la cedula" autocomplete="off">
+                </mat-form-field>
+                <!-- Validaciones de nombre -->
+                <!-- ... -->
+            </div>
+            <div class="columna">
+                <mat-form-field appearance="fill">
+                    <mat-label>Cargo</mat-label>
+                    <input formControlName="CARGO" matInput placeholder="Ingrese el cargo" autocomplete="off">
+                </mat-form-field>
+                <!-- Validaciones de apellido -->
+                <!-- ... -->
+            </div>
+            <div class="columna">
+                <mat-form-field appearance="fill">
+                    <mat-label>Contraseña</mat-label>
+                    <input formControlName="CONTRASENA" type="password" matInput placeholder="Ingrese Contraseña" autocomplete="off">
+                </mat-form-field>
+                <!-- Validaciones de teléfono -->
+                <!-- ... -->
+            </div>
+            <div class="columna">
+                <mat-form-field appearance="fill">
+                    <mat-label>Observaciones</mat-label>
+                    <input formControlName="OBSERVACIONES" matInput placeholder="Ingrese Observaciones" autocomplete="off">
+                </mat-form-field>
+                <!-- Validaciones de correo -->
+                <!-- ... -->
+            </div>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button type="button" mat-button (click)="cancelar()">Cancelar</button>
+        <button type="submit" mat-button cdkFocusInitial>Aceptar</button>
+    </mat-dialog-actions>
+</form>

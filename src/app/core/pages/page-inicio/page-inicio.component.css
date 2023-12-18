@@ -1,0 +1,25 @@
+
+body {
+   
+    background-image: url('./../../../../assets/img/ini.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+.content {
+    text-align: center;
+    padding: 100px;
+}
+
+
+
+
+.login {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 5px;
+}
+
+

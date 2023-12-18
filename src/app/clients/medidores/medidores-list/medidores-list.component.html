@@ -1,0 +1,25 @@
+<gst-spiner [showSpinner]="showSpinner"></gst-spiner>
+<gst-container>
+    <mat-card>
+        <mat-card-content>
+            <div fxLayout fxLayoutGap="20px">
+                <mat-form-field appearance="outline">
+                    <mat-label>Buscar</mat-label>
+                    <input matInput (keyup)="applyFilter($event)" placeholder="Ingrese datos a buscar" autocomplete="off">
+                </mat-form-field>
+            </div>
+        </mat-card-content>
+    </mat-card>
+    
+    <ng-scrollbar class="heightMaxScrollbar">
+        <gst-table [data]="dataSource" [metaDataColumns]="metaDataColumns" (actionClicked)="ejecutarAccion($event.accion, $event.rowData)">
+        </gst-table>
+    </ng-scrollbar>
+    
+    <gst-paginator (onChangePage)="changePage($event)" [length]="totalRecords"></gst-paginator>
+</gst-container>
+
+<gst-keypad-button 
+    [keypadButtons]="keypadButtons" 
+    (onClick)="doAction($event)">
+</gst-keypad-button>

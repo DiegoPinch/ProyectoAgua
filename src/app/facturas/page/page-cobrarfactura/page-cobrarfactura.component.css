@@ -1,0 +1,39 @@
+
+.contenedor {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px; /* Ajusta el valor según tus necesidades */
+    text-align: center;
+  }
+  mat-card {
+    border: 2px solid #000000;
+    /* Puedes cambiar el color según tus preferencias */
+    border-radius: 12px;
+    /* A  justa el radio de borde según tus preferencias */
+    
+}
+  .container {
+    padding: 5px 0;
+    background-color: whitesmoke;
+   
+  }
+  .mat-list-item-content:hover {
+    background-color: #c1b0b0; /* Cambia el color de fondo al pasar el ratón por encima */
+    cursor: pointer; /* Cambia el cursor al pasar el ratón por encima */
+  }
+  .boton-cobrar-container {
+    text-align: right; /* Alinea el botón a la derecha */
+    margin-top: 20px; /* Agrega espacio superior según tus necesidades */
+  }
+
+
+  .icon-grande {
+    font-size: 36px; /* Ajusta el tamaño a tu preferencia */
+  }
+  
+  .nombre-apellido {
+    margin: 0 20px; /* Añade espacio entre los iconos y el nombre */
+    font-size: 28px; /* Ajusta el tamaño a tu preferencia */
+  }
+  

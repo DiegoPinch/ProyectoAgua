@@ -1,0 +1,63 @@
+<gst-spiner [showSpinner]="showSpinner"></gst-spiner>
+<gst-container>
+    <div fxLayout fxLayoutGap="20px">
+        <mat-form-field appearance="outline">
+            <mat-label>Buscar</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="Ingrese datos a buscar" #input
+                autocomplete="off">
+        </mat-form-field>
+    </div>
+    <ng-scrollbar class="heightMaxScrollbar">
+    <table matSort mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="CED_USU">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> CEDULA </th>
+            <td mat-cell *matCellDef="let element"> {{element.CED_USU}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="NOM_USU">
+            <th mat-header-cell *matHeaderCellDef> NOMBRE</th>
+            <td mat-cell *matCellDef="let element"> {{element.NOM_USU}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="APE_USU">
+            <th mat-header-cell *matHeaderCellDef> APELLIDO </th>
+            <td mat-cell *matCellDef="let element"> {{element.APE_USU}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="TEL_USU">
+            <th mat-header-cell *matHeaderCellDef>TELEFONO</th>
+            <td mat-cell *matCellDef="let element"> {{element.TEL_USU}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="CORREO_USU">
+            <th mat-header-cell *matHeaderCellDef>CORREO</th>
+            <td mat-cell *matCellDef="let element"> {{element.CORREO_USU}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="ESTADO">
+            <th mat-header-cell *matHeaderCellDef> ESTADO</th>
+            <td mat-cell *matCellDef="let element"> {{element.ESTADO}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef> ACCIONES </th>
+            <td mat-cell *matCellDef="let element">
+                <mat-icon (click)="openAddEditDialog(element)" class="btnEdit" matTooltip="Editar">edit</mat-icon>
+                <mat-icon (click)="openConfirmDialog(element.CED_USU)" class="btnDelete"
+                    matTooltip="Eliminar">delete</mat-icon>
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</ng-scrollbar>
+    <div fxLayout fxLayoutAlign.gt-lg="end center" fxLayoutGap.gt-lg="10px">
+        <mat-paginator [pageSizeOptions]="[10 , 10, 20]" showFirstLastButtons
+        aria-label="Select page of periodic elements">
+    </mat-paginator>
+    </div>
+</gst-container>
+<gst-keypad-button 
+    [keypadButtons]="keypadButtons" 
+    (onClick)="doAction($event)">
+</gst-keypad-button>

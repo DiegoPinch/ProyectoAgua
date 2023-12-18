@@ -1,0 +1,23 @@
+@import "~@fortawesome/fontawesome-free/css/all.css";
+
+footer {
+    background-color: rgb(63, 81, 181);
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+}
+
+.social-icons a {
+    margin: 0 10px;
+    font-size: 24px;
+    color: #fff;
+    text-decoration: none;
+}
+
+.social-icons a:hover {
+    color: #007bff;
+}
+
+p {
+    margin-top: 20px;
+}

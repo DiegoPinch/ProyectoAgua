@@ -1,0 +1,21 @@
+/* Clase de estilo para el ícono de editar (color verde) */
+.edit-icon {
+    color: green;
+  }
+  
+  /* Clase de estilo para el ícono de eliminar (color rojo) */
+  .delete-icon {
+    color: red;
+  }
+
+  .custom-toolbar {
+    box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.2);
+    background-color:  #C5CAE9;
+}
+
+/* En tu archivo CSS personalizado */
+.custom-button {
+    font-size: 16px; /* Ajusta el tamaño de fuente para hacer los botones más grandes */
+    
+}
+

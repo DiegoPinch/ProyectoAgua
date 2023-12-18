@@ -1,0 +1,37 @@
+<gst-spiner [showSpinner]="showSpinner"></gst-spiner>
+<gst-container>
+  <mat-card >
+    <mat-card-header>
+        <mat-card-title></mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+          <div fxLayout fxLayoutGap="20px" >
+            <mat-form-field appearance="outline">
+                <mat-label>Selecciona una opción</mat-label>
+                <mat-select [(ngModel)]="selectedTipo" (selectionChange)="cargarDatos()">
+                  <mat-option *ngFor="let option of options" [value]="option">{{ option }}</mat-option>
+                </mat-select>
+                
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Selecciona un mes</mat-label>
+                <mat-select [(ngModel)]="selectedMes" (ngModelChange)="restarUnMes($event)">
+                  <mat-option *ngFor="let mes of mesesDelAnio" [value]="mes" [disabled]="esMesPosterior(mes)">{{ mes }}</mat-option>
+                </mat-select>
+                <gst-spiner [showSpinner]="showSpinnerA"></gst-spiner>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Buscar</mat-label>
+                <input matInput (keyup)="applyFilter($event)" placeholder="Ingrese datos a buscar" #input
+                    autocomplete="off">
+            </mat-form-field>
+        </div>
+    </mat-card-content>
+</mat-card>
+
+    <ng-scrollbar class="heightMaxScrollbar">
+      <gst-table [data]="dataSource" [metaDataColumns]="metaDataColumns" (actionClicked)="ejecutarAccion($event.accion, $event.rowData)">
+        </gst-table>
+    </ng-scrollbar>
+    <gst-paginator (onChangePage)="changePage($event)" [length]="totalRecords"></gst-paginator>
+</gst-container>

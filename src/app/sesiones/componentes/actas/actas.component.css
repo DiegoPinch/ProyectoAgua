@@ -1,0 +1,6 @@
+mat-card {
+    border: 2px solid #000000;
+    /* Puedes cambiar el color según tus preferencias */
+    border-radius: 12px;
+    /* Ajusta el radio de borde según tus preferencias */
+}

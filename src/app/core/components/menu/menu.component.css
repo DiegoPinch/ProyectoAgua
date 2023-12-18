@@ -1,0 +1,37 @@
+mat-nav-list {
+    width: 95%;
+    height: calc(100vh - 64px);
+}
+
+mat-list-item {
+    margin-top: 10px;
+    border-radius: 0 24px 24px 0;
+}
+
+a,
+a:link,
+a:visited,
+a:active {
+    color: whitesmoke !important;
+    font-size: 14px;
+}
+
+span {
+    display: inline-block;
+    padding-left: 8px;
+    font-size: 20px;
+}
+
+span.clicked {
+    /*color: rgba(37, 43, 72, 0.7); /* Cambia el color a tu preferencia cuando se hace clic */
+    color: #1A237E;
+    font-weight: bold;
+}
+
+.mat-divider {
+    background-color: #403d3d; 
+    opacity: 0.7; 
+  }
+
+
+

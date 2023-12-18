@@ -1,0 +1,27 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    /* Ocupa toda la altura vertical de la pantalla */
+}
+
+
+.full-width {
+    width: 100%;
+}
+
+.login-button {
+    width: 100%;
+    margin-top: 20px;
+}
+h2 {
+    color: white;
+    font-size: 40px; /* Cambia el tamaño de fuente a tu preferencia */
+    text-align: center; /* Alinea el texto al centro si lo deseas */
+    font-weight: bold;
+    margin-top: 0px;
+  }
+  .larger-card {
+    width: 47%;
+  }

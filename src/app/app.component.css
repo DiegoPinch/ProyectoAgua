@@ -1,0 +1,32 @@
+
+/* para el hedader*/
+.fixed-header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+}
+body {
+  margin-top: 64px; /* Ajusta el valor según el tamaño de tu encabezado */
+}
+
+.larger-button {
+  font-size: 19px;
+  padding: 10px 20px;
+  transition: background-color 0.3s, color 0.3s;
+  color: white;
+  background-color: #252B48;
+}
+
+.larger-button:hover {
+  background-color: rgba(37, 43, 72, 0.7);
+}
+
+.larger-button.clicked {
+  background-color: rgba(37, 43, 72, 0.7);
+}
+
+
+
+
+

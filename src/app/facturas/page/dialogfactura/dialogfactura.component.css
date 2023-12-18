@@ -1,0 +1,21 @@
+.contenedor {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px; /* Ajusta el valor según tus necesidades */
+  text-align: center;
+}
+
+.container {
+  padding: 5px 0;
+  background-color: whitesmoke;
+ 
+}
+.mat-list-item-content:hover {
+  background-color: #c1b0b0; /* Cambia el color de fondo al pasar el ratón por encima */
+  cursor: pointer; /* Cambia el cursor al pasar el ratón por encima */
+}
+.boton-cobrar-container {
+  text-align: right; /* Alinea el botón a la derecha */
+  margin-top: 20px; /* Agrega espacio superior según tus necesidades */
+}

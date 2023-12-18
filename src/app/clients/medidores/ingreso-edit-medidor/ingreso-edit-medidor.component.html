@@ -1,0 +1,75 @@
+
+<mat-toolbar fxLayout fxLayoutAlign="space-between center">
+    <h3>{{ title }}</h3>
+    <button mat-icon-button mat-dialog-close>
+        <mat-icon>close</mat-icon>
+    </button>
+</mat-toolbar>
+<mat-dialog-content>
+    <form fxLayout="column" [formGroup]="group">
+        <div fxLayout="row" fxLayoutGap="24px" >
+            <mat-form-field appearance="outline">
+                <mat-label>Cédula</mat-label>
+                <input #inputCedula type="text" matInput formControlName="CED_USU_MED">
+            </mat-form-field>
+            
+            <mat-form-field appearance="outline">
+                <mat-label>Marca</mat-label>
+                <input type="text" matInput formControlName="MARCA_MED">
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutGap="24px" >
+            <mat-form-field appearance="outline">
+                <mat-label>Observación</mat-label>
+                <input type="text" matInput formControlName="OBS_MED">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Año de Ingreso</mat-label>
+                <input #inputAñoIngreso type="text" matInput formControlName="AÑO_INGRESO" >
+                <gst-spiner [showSpinner]="showSpinnerA"></gst-spiner>
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutGap="24px" >
+            <mat-form-field appearance="outline">
+                <mat-label>Tipo</mat-label>
+                <mat-select [(ngModel)]="selectedTipo" formControlName="TIPO_MED">
+                    <mat-option *ngFor="let option of options" [value]="option">{{ option }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Código QR</mat-label>
+                <input type="text" matInput formControlName="CODIGO_QR">
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutGap="24px" >
+            <div>
+                <mat-form-field appearance="outline">
+                    <mat-label>Lectura Ingreso</mat-label>
+                    <input type="number" matInput formControlName="LEC_ING">
+                </mat-form-field>
+                <div class="error">
+                    <span *ngIf="group.get('LEC_ING')?.hasError('lecturaInvalida')">
+                      Es una lectura <strong>incorrecta</strong>
+                    </span>
+                  </div>
+            </div>
+        </div>
+        <div fxLayout fxLayoutAlign="end" fxLayoutGap="10px">
+            <button 
+                mat-raised-button
+                color="primary"
+                type="button"
+                [disabled]="group.invalid"
+                (click)="save()">
+                Guardar
+            </button>
+            <button 
+                mat-button
+                color="primary"
+                type="button"
+                mat-dialog-close>
+                Cancelar
+            </button>            
+        </div>        
+    </form>
+</mat-dialog-content>

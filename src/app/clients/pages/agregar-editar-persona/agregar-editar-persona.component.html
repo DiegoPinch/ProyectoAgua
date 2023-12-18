@@ -1,0 +1,113 @@
+<form [formGroup]="form" (ngSubmit)="addEditPersona()">
+    <mat-toolbar fxLayout fxLayoutAlign="space-between center">
+        <h3 mat-dialog-title>{{ isEdit ? 'Editar Socio' : 'Nuevo Socio' }}</h3>
+        <button mat-icon-button mat-dialog-close>
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-toolbar>
+    
+    <mat-dialog-content class="mat-typography">
+        <!-- PARA EL CAMPO PERSONA -->
+        <div class="row">
+            <div class="columna">
+                <mat-form-field appearance="outline">
+                    <mat-label>Cedula</mat-label>
+                    <input formControlName="cedula" matInput placeholder="Ingrese la Cedula" autocomplete="off"
+                        [readonly]="isEdit" >
+                </mat-form-field>
+                <div class="error">
+                    <span *ngIf="form.get('cedula')?.hasError('cedulaInvalida')">
+                        Es una cedula <strong>incorrecta</strong>
+                    </span>
+                </div>
+                <div class="error">
+                    <span *ngIf="form.get('cedula')?.hasError('required') && form.get('cedula')?.touched">
+                        Es un campo <strong>requerido</strong>
+                    </span>
+                </div>
+                <div class="error">
+                    <span *ngIf="form.get('cedula')?.hasError('pattern') ">
+                        Ingrese <strong>solo números</strong> que <strong>sean igual a 10 caracteres</strong>
+                    </span>
+                </div>
+            </div>
+            <!-- PARA EL CAMPO NOMBRE -->
+            <div class="columna">
+                <mat-form-field appearance="outline">
+                    <mat-label>Nombre</mat-label>
+                    <input formControlName="nombre" matInput placeholder="Ingrese el Nombre" autocomplete="off" (input)="convertirAMayusculas('nombre')">
+                </mat-form-field>
+                <div class="error">
+                    <span *ngIf="form.get('nombre')?.hasError('invalidNombre')">
+                        Ingreso<strong> incorrecto</strong>
+                    </span>
+                    <span *ngIf="form.get('nombre')?.hasError('required') && form.get('nombre')?.touched">
+                        Es un campo <strong>requerido</strong>
+                    </span>
+                    <span *ngIf="form.get('nombre')?.hasError('maxlength')">
+                        ,Es un campo con muchos<strong> caracteres</strong>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <!-- PARA EL CAMPO APELLIDO -->
+        <div class="row">
+            <div class="columna">
+                <mat-form-field appearance="outline">
+                    <mat-label>Apellido</mat-label>
+                    <input formControlName="apellido" matInput placeholder="Ingrese el Apellido" autocomplete="off" (input)="convertirAMayusculas('apellido')">
+                </mat-form-field>
+                <div class="error">
+                    <span *ngIf="form.get('apellido')?.hasError('invalidApellido')">
+                        Ingreso<strong> incorrecto</strong>
+                    </span>
+                    <span *ngIf="form.get('apellido')?.hasError('required') && form.get('apellido')?.touched">
+                        Es un campo <strong>requerido</strong>
+                    </span>
+                    <span *ngIf="form.get('apellido')?.hasError('maxlength')">
+                        Es un campo con muchos<strong>caracteres</strong>
+                    </span>
+
+                </div>
+            </div>
+            <!-- PARA LA EDAD -->
+            <div class="columna">
+                <mat-form-field appearance="outline">
+                    <mat-label>Teléfono</mat-label>
+                    <input formControlName="telefono" matInput placeholder="Ingrese el teléfono" autocomplete="off">
+                </mat-form-field>
+                <div class="error">
+                    <span *ngIf="form.get('telefono')?.hasError('invalidTelefono')">
+                        Ingreso <strong> incorrecto</strong>
+                    </span>
+                    
+                    <span *ngIf="form.get('telefono')?.hasError('pattern')">
+                        Es un campo de solo<strong> numeros </strong>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <!-- PARA EL TELEFONO -->
+        <div class="row">
+            <div class="columna">
+                <mat-form-field appearance="outline">
+                    <mat-label>Correro</mat-label>
+                    <input formControlName="correo" matInput placeholder="Ingrese el correo" autocomplete="off">
+                </mat-form-field>
+                <div class="error">
+                    <span *ngIf="form.get('correo')?.hasError('required') && form.get('correo')?.touched">
+                        Es un campo <strong>requerido</strong>
+                    </span>
+                    <span *ngIf="form.get('correo')?.hasError('invalidCorreo')">
+                        Ingreso <strong> incorrecto</strong>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button type="button" mat-button (click)="cancelar()">Cancelar</button>
+        <button [disabled]="form.invalid" type="submit" mat-button cdkFocusInitial>Aceptar</button>
+    </mat-dialog-actions>
+
+</form>

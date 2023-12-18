@@ -1,0 +1,8 @@
+mat-form-field {
+  width: 45vh;
+}
+
+.error {
+  color: brown;
+  margin-top: -20px;
+}
