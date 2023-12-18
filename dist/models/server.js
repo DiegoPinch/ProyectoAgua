@@ -48,10 +48,14 @@ var Server = /** @class */ (function () {
     };
     // conexion a bdd
     Server.prototype.conectarDB = function () {
-        connection_1.default.connect(function (error) {
-            if (error)
+        connection_1.default.getConnection(function (error, connection) {
+            if (error) {
                 throw error;
-            console.log('conexion exitosa');
+            }
+            else {
+                console.log('Conexión exitosa');
+                connection.release();
+            }
         });
     };
     return Server;

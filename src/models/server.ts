@@ -47,13 +47,16 @@ class Server {
     }
     // conexion a bdd
     conectarDB() {
-        connection.connect((error) => {
-            if (error) throw error;
-            console.log('conexion exitosa');
-
-        }
-        );
+        connection.getConnection((error, connection) => {
+            if (error) {
+                throw error;
+            } else {
+                console.log('Conexión exitosa');
+                connection.release();
+            }
+        });
     }
+    
 
 }
 export default Server
