@@ -196,51 +196,64 @@ var eliminarPersona = function (req, resp) { return __awaiter(void 0, void 0, vo
     var id;
     return __generator(this, function (_a) {
         id = req.params.id;
-        connection_1.default.beginTransaction(function (err) {
+        connection_1.default.getConnection(function (err, connection) {
             if (err) {
-                console.error('Error al iniciar la transacción', err);
+                console.error('Error al obtener conexión del pool', err);
                 resp.status(500).json({
-                    error: 'Error al editar la persona y sus medidores',
+                    error: 'Error interno del servidor',
                 });
                 return;
             }
-            connection_1.default.query('UPDATE USUARIOS SET ESTADO = ? WHERE CED_USU = ?', ['PASIVO', id], function (updateErr, updateData) {
-                if (updateErr) {
-                    connection_1.default.rollback(function () {
-                        console.error('Error al editar la persona', updateErr);
-                        resp.status(500).json({
-                            error: 'Error al editar la persona',
-                        });
+            connection.beginTransaction(function (beginErr) {
+                if (beginErr) {
+                    console.error('Error al iniciar la transacción', beginErr);
+                    connection.release(); // Liberar la conexión
+                    resp.status(500).json({
+                        error: 'Error interno del servidor',
                     });
                     return;
                 }
-                // Actualizar los medidores de esa persona a un estado pasivo
-                connection_1.default.query('UPDATE MEDIDORES SET ESTADO = ? WHERE CED_USU_MED = ?', ['INACTIVO', id], function (updateMedErr, updateMedData) {
-                    if (updateMedErr) {
-                        connection_1.default.rollback(function () {
-                            console.error('Error al actualizar los medidores', updateMedErr);
+                connection.query('UPDATE USUARIOS SET ESTADO = ? WHERE CED_USU = ?', ['PASIVO', id], function (updateErr, updateData) {
+                    if (updateErr) {
+                        connection.rollback(function () {
+                            console.error('Error al editar la persona', updateErr);
+                            connection.release(); // Liberar la conexión
                             resp.status(500).json({
-                                error: 'Error al actualizar los medidores',
+                                error: 'Error al editar la persona',
                             });
                         });
                         return;
                     }
-                    connection_1.default.commit(function (commitErr) {
-                        if (commitErr) {
-                            connection_1.default.rollback(function () {
-                                console.error('Error al realizar el commit de la transacción', commitErr);
+                    // Resto de tu lógica para actualizar los medidores de esa persona
+                    connection.query('UPDATE MEDIDORES SET ESTADO = ? WHERE CED_USU_MED = ?', ['INACTIVO', id], function (updateMedErr, updateMedData) {
+                        if (updateMedErr) {
+                            connection.rollback(function () {
+                                console.error('Error al actualizar los medidores', updateMedErr);
                                 resp.status(500).json({
-                                    error: 'Error al editar la persona y sus medidores',
+                                    error: 'Error al actualizar los medidores',
                                 });
                             });
+                            return;
                         }
-                        else {
-                            resp.json({
-                                msg: 'Editada con éxito',
-                            });
-                        }
-                    });
-                });
+                        connection.commit(function (commitErr) {
+                            if (commitErr) {
+                                connection.rollback(function () {
+                                    console.error('Error al realizar el commit de la transacción', commitErr);
+                                    connection.release(); // Liberar la conexión
+                                    resp.status(500).json({
+                                        error: 'Error interno del servidor',
+                                    });
+                                });
+                            }
+                            else {
+                                connection.release(); // Liberar la conexión
+                                resp.json({
+                                    msg: 'Editada con éxito',
+                                });
+                            }
+                        });
+                    }); // Agregado el paréntesis de cierre aquí
+                }); // Agregado el paréntesis de cierre aquí
             });
         });
         return [2 /*return*/];
