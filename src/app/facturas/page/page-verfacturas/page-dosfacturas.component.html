@@ -1,12 +1,12 @@
 <gst-container>
     <div fxLayout fxLayoutGap="10px">
-        <mat-form-field>
+        <mat-form-field appearance="outline" >
             <mat-label>Selecciona un mes</mat-label>
             <mat-select [(ngModel)]="selectedMes" (selectionChange)="cargarDatos()" >
               <mat-option *ngFor="let mes of mesesDelAnio" [value]="mes">{{ mes }}</mat-option>
             </mat-select>
           </mat-form-field>
-        <mat-form-field>
+        <mat-form-field appearance="outline">
             <mat-label>Selecciona una opción</mat-label>
             <mat-select [(ngModel)]="selectedTipo" (selectionChange)="cargarDatos()">
               <mat-option *ngFor="let option of options" [value]="option">{{ option }}</mat-option>

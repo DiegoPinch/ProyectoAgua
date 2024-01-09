@@ -16,24 +16,24 @@ export class PageDosfacturasComponent {
   mesesDelAnio: string[] = [];
   fechaActual!: Date;
   selectedMes: string = '';
-  selectedTipo: string = '';
-  
+  defaultMes: string = ''
+  selectedTipo: string = 'CONSUMO';
   options: string[] = ['CONSUMO', 'RIEGO'];
 
   metaDataColumns: MetaDataColumn[] = [
     { field: "CED_USU", title: "CEDULA" },
     { field: "NOM_USU", title: "NOMBRE" },
     { field: "APE_USU", title: "APELLIDO" },
-    { field: "TIPO_MED", title: "TIPO"},
+    { field: "TIPO_MED", title: "TIPO" },
     { field: "LEC_ANT", title: "L. ANT" },
     { field: "LEC_ACT", title: "L. ACT" },
-    { field: "MES_CON", title: "MES"},
-    { field: "EXC_LECTURA", title: "EXCESO"},
-    { field: "EST_FACT", title: "ESTADO"},
-    { field: "SUM_TOTAL", title: "VALOR"},
+    { field: "MES_CON", title: "MES" },
+    { field: "EXC_LECTURA", title: "EXCESO" },
+    { field: "EST_FACT", title: "ESTADO" },
+    { field: "SUM_TOTAL", title: "VALOR" },
   ];
 
-  constructor(private _servFacturas:ServiceObtenerFacService ,
+  constructor(private _servFacturas: ServiceObtenerFacService,
     private fechaHoraService: FechahoraService,
     private authService: AuthService,
     private dialog: MatDialog) {
@@ -42,64 +42,68 @@ export class PageDosfacturasComponent {
   }
 
   ngOnInit() {
-    //obtiene la fecha desde el servidor
+    this.getFechaHoraActual()
+  }
+
+  private getMesActual() {
+    const año = this.fechaActual.getFullYear();
+    const mes = this.fechaActual.getMonth();
+    const meses = [
+      'ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO',
+      'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'
+    ];
+    return `${año}-${meses[mes]}`;
+  }
+
+  private getFechaHoraActual() {
     this.fechaHoraService.obtenerFechaHoraActual().subscribe(
       (data: any) => {
         this.fechaActual = new Date(data.datetime);
         this.generarMesesDelAnio();
-        console.log(this.fechaActual);
+        this.selectedMes = this.getMesActual();
+        this.defaultMes = this.getMesActual();
+        this.cargarDatos();
+
       },
       error => {
         console.error('Error al obtener la fecha actual:', error);
       }
     );
-
   }
+
   //sirve para setear fecha
   generarMesesDelAnio() {
     const año = this.fechaActual.getFullYear();
     const meses = [
-      'ENERO',
-      'FEBRERO',
-      'MARZO',
-      'ABRIL',
-      'MAYO',
-      'JUNIO',
-      'JULIO',
-      'AGOSTO',
-      'SEPTIEMBRE',
-      'OCTUBRE',
-      'NOVIEMBRE',
-      'DICIEMBRE'
+      'ENERO','FEBRERO','MARZO','ABRIL','MAYO','JUNIO','JULIO','AGOSTO','SEPTIEMBRE','OCTUBRE','NOVIEMBRE','DICIEMBRE'
     ];
-
     this.mesesDelAnio = meses.map(mes => `${año}-${mes}`);
   }
 
   cargarDatos() {
     const usuario = this.authService.obtenerUsuario();
     const cedula = usuario!.cedula;
-      this._servFacturas.getFacturas(cedula).subscribe((data: any[]) => {
-        this.records = data.map(item => {
-          return {
-            CED_USU: item.CED_USU,
-            NOM_USU: item.NOM_USU,
-            APE_USU: item.APE_USU,
-            TIPO_MED: item.TIPO_MED,
-            LEC_ANT: item.LEC_ANT,
-            LEC_ACT: item.LEC_ACT,
-            MES_CON: item.MES_CON,
-            EXC_LECTURA: item.EXC_LECTURA,
-            EST_FACT: item.EST_FACT,
-            SUM_TOTAL: item.SUM_TOTAL
-          };
-        });
-        this.totalRecords = this.records.length;
-        this.changePage(0); // Llama a changePage después de cargar los datos
+    this._servFacturas.getFacturas(cedula).subscribe((data: any[]) => {
+      this.records = data.map(item => {
+        return {
+          CED_USU: item.CED_USU,
+          NOM_USU: item.NOM_USU,
+          APE_USU: item.APE_USU,
+          TIPO_MED: item.TIPO_MED,
+          LEC_ANT: item.LEC_ANT,
+          LEC_ACT: item.LEC_ACT,
+          MES_CON: item.MES_CON,
+          EXC_LECTURA: item.EXC_LECTURA,
+          EST_FACT: item.EST_FACT,
+          SUM_TOTAL: item.SUM_TOTAL
+        };
       });
-    
+      this.totalRecords = this.records.length;
+      this.changePage(0); // Llama a changePage después de cargar los datos
+    });
+
   }
-  
+
 
   data: any[] = []
   totalRecords = this.records.length

@@ -1,5 +1,5 @@
+<gst-spiner></gst-spiner>
 <gst-container>
-    <button mat-raised-button color="primary" (click)="openAddEditDialog()">Agregar nuevo Directiva</button>
     <ng-scrollbar class="heightMaxScrollbar">
         <gst-table [data]="data" [metaDataColumns]="metaDataColumns"
             (actionClicked)="ejecutarAccion($event.accion, $event.rowData) ">
@@ -7,5 +7,5 @@
     </ng-scrollbar>
     <gst-paginator (onChangePage)="changePage($event)" [length]="totalRecords"></gst-paginator>
 </gst-container>
-
-<gst-spiner></gst-spiner>
+<gst-keypad-button [keypadButtons]="keypadButtons" (onClick)="doAction($event)">
+</gst-keypad-button>

@@ -142,12 +142,17 @@ export class PageeditarlecturasComponent implements OnInit {
   
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
-    this.dataSource.filter = filterValue; // Aplica el filtro a la fuente de datos
-    if (this.dataTable.paginator) {
-      this.dataTable.paginator.firstPage();
+    const filteredData = this.records.filter(item =>
+      item.CED_USU.toLowerCase().includes(filterValue) ||
+      item.NOM_USU.toLowerCase().includes(filterValue) ||
+      item.APE_USU.toLowerCase().includes(filterValue) 
+      
+    );
+    this.dataSource = new MatTableDataSource<any>(filteredData);
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
     }
   }
-  
   data: any[] = []
   totalRecords = this.records.length
   changePage(page: number) {

@@ -1,44 +1,57 @@
-<!-- app.component.html -->
 <form [formGroup]="form" (ngSubmit)="addEditDirectiva()" class="formulario">
-    <h2 mat-dialog-title>Agregar Directiva</h2>
+    <mat-toolbar fxLayout fxLayoutAlign="space-between center">
+        <h3 mat-dialog-title> Agregar Directiva</h3>
+        <button mat-icon-button mat-dialog-close>
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-toolbar>
     <mat-dialog-content class="mat-typography">
-        <div class="columnas">
+        <div class="row">
             <div class="columna">
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="outline">
                     <mat-label>ID</mat-label>
-                    <input formControlName="ID_DIR_DET" matInput placeholder="Ingrese el ID" autocomplete="off">
+                    <input formControlName="ID_DIR_DET" matInput placeholder="Ingrese el ID" autocomplete="off" [readonly]="true">
                 </mat-form-field>
                 <!-- Validaciones de cedula -->
                 <!-- ... -->
             </div>
             <div class="columna">
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="outline">
                     <mat-label>Cedula</mat-label>
                     <input formControlName="CED_USU_DIR" matInput placeholder="Ingrese la cedula" autocomplete="off">
                 </mat-form-field>
                 <!-- Validaciones de nombre -->
                 <!-- ... -->
             </div>
+        </div>
+        <div class="row">
             <div class="columna">
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="outline">
                     <mat-label>Cargo</mat-label>
-                    <input formControlName="CARGO" matInput placeholder="Ingrese el cargo" autocomplete="off">
+                    <mat-select formControlName="CARGO" placeholder="Seleccione el cargo">
+                        <mat-option value="LECTOR">LECTOR</mat-option>
+                        <mat-option value="ADMINISTRADOR">ADMINISTRADOR</mat-option>
+                        <mat-option value="SECRETARIO">SECRETARIO</mat-option>
+                        <mat-option value="TESORERO">TESORERO</mat-option>
+                    </mat-select>
                 </mat-form-field>
-                <!-- Validaciones de apellido -->
-                <!-- ... -->
             </div>
             <div class="columna">
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="outline">
                     <mat-label>Contraseña</mat-label>
-                    <input formControlName="CONTRASENA" type="password" matInput placeholder="Ingrese Contraseña" autocomplete="off">
+                    <input formControlName="CONTRASENA" type="password" matInput placeholder="Ingrese Contraseña"
+                        autocomplete="off">
                 </mat-form-field>
                 <!-- Validaciones de teléfono -->
                 <!-- ... -->
             </div>
+        </div>
+        <div class="row">
             <div class="columna">
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="outline">
                     <mat-label>Observaciones</mat-label>
-                    <input formControlName="OBSERVACIONES" matInput placeholder="Ingrese Observaciones" autocomplete="off">
+                    <input formControlName="OBSERVACIONES" matInput placeholder="Ingrese Observaciones"
+                        autocomplete="off">
                 </mat-form-field>
                 <!-- Validaciones de correo -->
                 <!-- ... -->

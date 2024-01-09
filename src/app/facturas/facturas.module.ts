@@ -7,8 +7,6 @@ import { PageCobrarfacturaComponent } from './page/page-cobrarfactura/page-cobra
 import { PageImprimirfacturaComponent } from './page/page-imprimirfactura/page-imprimirfactura.component';
 import { PageDosfacturasComponent } from './page/page-verfacturas/page-dosfacturas.component';
 import { DialogfacturaComponent } from './page/dialogfactura/dialogfactura.component';
-import { VisorPdfComponent } from './visor-pdf/visor-pdf.component';
-import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { PageFacturasComponent } from './page/page-facturas/page-facturas.component';
 
 
@@ -19,14 +17,12 @@ import { PageFacturasComponent } from './page/page-facturas/page-facturas.compon
     PageImprimirfacturaComponent,
     PageDosfacturasComponent,
     DialogfacturaComponent,
-    VisorPdfComponent,
   ],
   imports: [
     CommonModule,
     FacturasRoutingModule,
     SharedModule,
     SharedtableModule,
-    NgxExtendedPdfViewerModule
   ],
   exports: [
     PageFacturasComponent,
@@ -34,7 +30,6 @@ import { PageFacturasComponent } from './page/page-facturas/page-facturas.compon
     PageImprimirfacturaComponent,
     PageDosfacturasComponent,
     DialogfacturaComponent,
-    VisorPdfComponent
   ]
 })
 export class FacturasModule { }

@@ -12,9 +12,9 @@
   }
   
   .btnDelete {
-    color: red;
+    color: rgb(181, 46, 49);
   }
-  
-  .btnEdit {
-    color: blue;
+
+  th{
+    background-color:  #E0E0E0 !important;;
   }

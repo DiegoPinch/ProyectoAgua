@@ -5,6 +5,7 @@ import { MetaDataColumn } from 'src/app/sharedtable/interfaces/metacolumn.interf
 import { environment } from 'src/environments/environments';
 import { ServeDetadminService } from '../../serve/serve-detadmin.service';
 import { IngresarEditarDirectivaComponent } from '../ingresar-editar-directiva/ingresar-editar-directiva.component';
+import { KeypadButton } from 'src/app/sharedtable/interfaces/keypadbutton.interfaces';
 
 @Component({
   selector: 'gst-directiva',
@@ -17,7 +18,7 @@ export class DirectivaComponent {
   selectedFileName!: string;
   data: any[] = [];
   metaDataColumns: MetaDataColumn[] = [
-    { field: "ID_DET_DIR", title: "ID" },
+   
     { field: "CED_USU_DIR", title: "CEDULA" },
     { field: "AÑO_ING", title: "AÑO INGRESO" },
     { field: "CARGO", title: "CARGO" },
@@ -27,13 +28,17 @@ export class DirectivaComponent {
   ];
   constructor(private fb: FormBuilder, private _adminService: ServeDetadminService, private dialog: MatDialog) {
     this.formulario = this.fb.group({
-      ID_SESION_ACT: [null, Validators.required],
+      CED_USU_DIR: ["1", Validators.required],
       DOCUMENTO: [null, Validators.required],
       OBSERVACION: [null, Validators.maxLength(50)],
     });
     this.cargarDatos();
     this.changePage(0)
   }
+  keypadButtons: KeypadButton[] = [
+    { icon: "cloud_download", tooltip: "EXPORTAR", color: "accent", action: "DOWNLOAD" },
+    { icon: "person_add", tooltip: "AGREGAR", color: "primary", action: "NEW" }
+  ];
 
   ngOnInit() {
     
@@ -126,10 +131,9 @@ export class DirectivaComponent {
   }
 
   openAddEditDialog() {
-
     const dialogRef = this.dialog.open(IngresarEditarDirectivaComponent, {
       width: '700px',
-      
+      disableClose: true
     });
  
     dialogRef.afterClosed().subscribe(result => {
@@ -144,5 +148,16 @@ export class DirectivaComponent {
     const pageSize = environment.PAGE_SIZE
     const skip = pageSize * page
     this.data = this.records.slice(skip, skip + pageSize)
+  }
+
+  doAction(action: string): void {
+    switch (action) {
+      case 'DOWNLOAD':
+        // Implementación para descargar
+        break;
+      case 'NEW':
+        this.openAddEditDialog();
+        break;
+    }
   }
 }

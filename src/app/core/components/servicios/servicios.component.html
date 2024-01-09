@@ -1,16 +1,17 @@
+<gst-header></gst-header>
 <mat-sidenav-container autosize="true">
     <mat-sidenav [opened]="this.authService.obtenerUsuario() !== null" mode="side">
         <div class="logo" fxLayout fxLayoutGap="20px" fxLayoutAlign="start center">
-            <mat-icon>
-                settings
-            </mat-icon>
-            <h3 *ngIf="expanded">Sistema de Gestion</h3>
+            <button mat-icon-button class="example-icon"  (click)="abrirComponente()">
+                <mat-icon>
+                    settings
+                </mat-icon>
+            </button>
+            <h3 *ngIf="expanded">SISTEMA DE GESTIÓN</h3>
         </div>
         <gst-menu (onToggleExpanded)="toggleExpanded($event)"></gst-menu>
     </mat-sidenav>
-    
     <mat-sidenav-content>
-        <gst-header></gst-header>
         <router-outlet></router-outlet>
     </mat-sidenav-content>
 </mat-sidenav-container>

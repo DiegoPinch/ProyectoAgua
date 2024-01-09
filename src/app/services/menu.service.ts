@@ -14,16 +14,16 @@ export class MenuService {
   private listMenu: IMenu[] =
   [
     {
-      title: 'Socios', url: '/servicios/clientes', icon: 'clients'
+      title: 'SOCIOS', url: '/servicios/clientes', icon: 'clients'
     },
     {
-      title: 'Lecuras', url: '/servicios/lecturas', icon: 'lecturas'
+      title: 'Lecturas', url: '/servicios/lecturas', icon: 'lecturas'
     },
     {
       title: 'Facturas', url: '/servicios/facturas', icon: 'facturas'
     },
     {
-      title: 'Sesiones', url: '/servicios/sesiones', icon: 'sesiones'
+      title: 'Actividades', url: '/servicios/sesiones', icon: 'sesiones'
     },
     {
       title: 'Administración', url: '/servicios/administracion', icon: 'administracion'

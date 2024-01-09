@@ -5,9 +5,9 @@
         </mat-card-header>
         <mat-card-content>
             <form [formGroup]="formulario" fxLayout="row" fxLayoutGap="14px">
-                <mat-form-field appearance="fill" fxFlex="15%">
+                <mat-form-field appearance="outline" fxFlex="15%">
                     <mat-label>ID Sesión Act</mat-label>
-                    <input matInput formControlName="ID_SESION_ACT" />
+                    <input [readonly]="true" matInput formControlName="ID_SESION_ACT" />
                 </mat-form-field>
                 <div fxFlex="30%">
                     <input type="file" (change)="onFileSelected($event)" accept=".pdf" style="display: none"
@@ -18,7 +18,7 @@
                     <span *ngIf="formulario.get('DOCUMENTO')?.value && formulario.get('DOCUMENTO')?.value.name">{{
                         formulario.get('DOCUMENTO')?.value.name }}</span>
                 </div>
-                <mat-form-field appearance="fill" fxFlex="25%">
+                <mat-form-field appearance="outline" fxFlex="25%">
                     <mat-label>Observación</mat-label>
                     <input matInput formControlName="OBSERVACION" />
                 </mat-form-field>
@@ -28,12 +28,26 @@
             </form>
         </mat-card-content>
     </mat-card>
-
-
     <ng-scrollbar class="heightMaxScrollbar">
         <gst-table [data]="data" [metaDataColumns]="metaDataColumns"
-            (actionClicked)="ejecutarAccion($event.accion, $event.rowData) ">
+            (actionClicked)="ejecutarAccion($event.accion, $event.rowData)">
+            <ng-template let-row let-columns="columns">
+                <tr *ngFor="let rowData of data">
+                    <td *ngFor="let column of columns">
+                        <ng-container *ngIf="column.key !== 'DOCUMENTO'; else linkColumn">
+                            {{ rowData[column.key] }}
+                        </ng-container>
+                        <ng-template #linkColumn>
+                            <a [href]="obtenerEnlaceDescarga(rowData[column.key])"
+                                download="documento.pdf">Descargar/Ver</a>
+                        </ng-template>
+                    </td>
+                </tr>
+            </ng-template>
         </gst-table>
     </ng-scrollbar>
     <gst-paginator (onChangePage)="changePage($event)" [length]="totalRecords"></gst-paginator>
+
+
+
 </gst-container>

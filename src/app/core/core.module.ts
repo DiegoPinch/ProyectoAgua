@@ -12,6 +12,9 @@ import { ServiciosComponent } from './components/servicios/servicios.component';
 import { SharedModule } from '../shared/shared.module';
 import { AbrirDialogoComponent } from './components/abrir-dialogo/abrir-dialogo.component';
 import { SharedtableModule } from '../sharedtable/sharedtable.module';
+import { MensajeokComponent } from './components/mensajeok/mensajeok.component';
+import { UserActivityDirective } from './serve/user-activity.directive';
+
 
 
 @NgModule({
@@ -25,6 +28,9 @@ import { SharedtableModule } from '../sharedtable/sharedtable.module';
     ServiciosComponent,
     FooterComponent,
     AbrirDialogoComponent,
+    MensajeokComponent,
+    UserActivityDirective,
+   
     
   ],
   imports: [
@@ -40,6 +46,8 @@ import { SharedtableModule } from '../sharedtable/sharedtable.module';
     MenuComponent,
     FooterComponent,
     AbrirDialogoComponent,
+    MensajeokComponent,
+    UserActivityDirective
     
   ]
 })

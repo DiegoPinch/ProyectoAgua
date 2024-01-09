@@ -1,5 +1,5 @@
 .mat-toolbar {
-   background-color: #687EFF; /* Cambia el color a tu preferencia */
+   background-color: #2E71B5; /* Cambia el color a tu preferencia */
     color: white; /* Cambia el color del texto a blanco o el color que desees */
     border-bottom: 1px solid #6b6b6b;
   }
@@ -16,3 +16,6 @@
 span{
    font-size: 16px;
 }
+
+
+

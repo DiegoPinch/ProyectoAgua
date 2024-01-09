@@ -8,6 +8,7 @@ import { AbrirDialogoComponent } from 'src/app/core/components/abrir-dialogo/abr
 import { KeypadButton } from 'src/app/sharedtable/interfaces/keypadbutton.interfaces';
 import { ServpersonaService } from '../modelo/persona/servpersona.service';
 import { Persona } from '../modelo/persona/interfaces/persona';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'gst-page-list-clients',
@@ -18,17 +19,21 @@ export class PageListClientsComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['CED_USU', 'NOM_USU', 'APE_USU', 'TEL_USU', 'CORREO_USU', 'ESTADO', 'acciones'];
   dataSource = new MatTableDataSource<Persona>();
   loading: boolean = false;
+  showSpinner: boolean = false;
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   keypadButtons: KeypadButton[] = [
     { icon: "cloud_download", tooltip: "EXPORTAR", color: "accent", action: "DOWNLOAD" },
-    { icon: "add", tooltip: "AGREGAR", color: "primary", action: "NEW" }
+    { icon: "person_add", tooltip: "AGREGAR", color: "primary", action: "NEW" }
   ];
 
-  constructor(public dialog: MatDialog, private _personaService: ServpersonaService) {}
+  constructor( public dialog: MatDialog, private _personaService: ServpersonaService, private snackBar: MatSnackBar) {
+    
+  }
 
-  showSpinner: boolean = false;
+  
 
   ngOnInit(): void {
     this.obtenerPersona();
@@ -69,8 +74,13 @@ export class PageListClientsComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.deletePersona(id);
+        this.showMessage("Persona Eliminada con éxito")
       }
     });
+  }
+  showMessage(message: string, duration: number = 5000) {
+    this.snackBar.open(message, '', { duration })
+    
   }
 
   ngAfterViewInit(): void {

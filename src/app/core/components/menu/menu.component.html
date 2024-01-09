@@ -1,26 +1,24 @@
 <mat-nav-list fxLayout="column" fxLayoutAlign="space-between">
-    <div>
-        <mat-list>
-            <ng-container *ngFor="let menu of listMenu; let last = last">
-              <mat-list-item>
-                <a [routerLink]="menu.url">
-                  <button mat-icon-button (click)="onButtonClick(menu.url)" >
-                    <mat-icon [svgIcon]="menu.icon"></mat-icon>
-                    <span [class.clicked]="menu.url === activeButton">{{ menu.title }}</span>
-                  </button>
-                </a>
-              </mat-list-item>
-              <mat-divider *ngIf="!last"></mat-divider>
-            </ng-container>
-          </mat-list>
-          
-    </div>
-    <div>
-        <mat-list-item>
-            <button mat-icon-button color="accent" (click)="toggleExpanded()" >
-                <mat-icon *ngIf="expanded">arrow_back_ios</mat-icon>
-                <mat-icon *ngIf="!expanded"> arrow_forward_ios</mat-icon>
+  <div>
+    <mat-list>
+      <ng-container *ngFor="let menu of listMenu">
+        <mat-list-item class="menu-item" (click)="onButtonClick(menu.url)" [class.clicked]="menu.url === activeButton">
+          <a [routerLink]="menu.url" class="menu-link">
+            <button mat-icon-button class="menu-button">
+              <mat-icon [svgIcon]="menu.icon"></mat-icon>
+              <span [class.clicked]="menu.url === activeButton" class="menu-title">{{ menu.title }}</span>
             </button>
+          </a>
         </mat-list-item>
-    </div>
+      </ng-container>
+    </mat-list>
+  </div>
+  <div>
+    <mat-list-item>
+      <button mat-icon-button color="accent" (click)="toggleExpanded()">
+        <mat-icon *ngIf="expanded">arrow_back_ios</mat-icon>
+        <mat-icon *ngIf="!expanded">arrow_forward_ios</mat-icon>
+      </button>
+    </mat-list-item>
+  </div>
 </mat-nav-list>

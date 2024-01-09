@@ -1,1 +1,11 @@
-<gst-directiva></gst-directiva>
+<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" (selectedTabChange)="onTabChange($event)"
+    [selectedIndex]="activeTabIndex"> <!-- Establecer el índice de la pestaña activa -->
+
+    <mat-tab label="ADMINISTRACIÓN DE DIRECTIVA"></mat-tab>
+    <mat-tab label="ADMINISTRACIÓN DE BIENES"></mat-tab>
+
+</mat-tab-group>
+<mat-divider></mat-divider>
+<body>
+    <router-outlet></router-outlet>
+</body>

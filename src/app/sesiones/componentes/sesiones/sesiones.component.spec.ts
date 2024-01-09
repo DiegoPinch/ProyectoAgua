@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VisorPdfComponent } from './visor-pdf.component';
+import { SesionesComponent } from './sesiones.component';
 
-describe('VisorPdfComponent', () => {
-  let component: VisorPdfComponent;
-  let fixture: ComponentFixture<VisorPdfComponent>;
+describe('SesionesComponent', () => {
+  let component: SesionesComponent;
+  let fixture: ComponentFixture<SesionesComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [VisorPdfComponent]
+      declarations: [SesionesComponent]
     });
-    fixture = TestBed.createComponent(VisorPdfComponent);
+    fixture = TestBed.createComponent(SesionesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

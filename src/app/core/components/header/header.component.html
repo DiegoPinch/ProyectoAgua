@@ -1,31 +1,33 @@
 <mat-toolbar fxLayout fxLayoutAlign="space-between center">
-  
+
   <div fxLayout="row" fxLayoutAlign="start center">
     <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
       <mat-icon>menu</mat-icon>
     </button>
     <span>{{ currentDateTime.toUpperCase() }}</span>
   </div>
-  
-  <div >
-    <button *ngIf="this.authService.obtenerUsuario()" mat-button class="profile" [mat-menu-trigger-for]="menu">
+
+  <div>
+    <button *ngIf="this.authService.obtenerUsuario()" mat-button [mat-menu-trigger-for]="menu">
       <div fxLayoutAlign="center center" fxLayoutGap="4px">
+        <mat-icon>account_circle</mat-icon>
         <span>{{ this.authService.obtenerUsuario()?.nombre }}</span>
         <mat-icon>keyboard_arrow_down</mat-icon>
       </div>
     </button>
-    <mat-menu #menu="matMenu">
+    <mat-menu #menu="matMenu" class="custom-menu">
       <button mat-menu-item>
         <mat-icon>account_circle</mat-icon>
         <span *ngIf="this.authService.obtenerUsuario()">
-          Tipo de Usuario: {{ this.authService.obtenerUsuario()?.cargo }}
+          Tipo de Usuario: {{ this.authService.obtenerUsuario()?.cargo | lowercase }}
         </span>
       </button>
+      <mat-divider></mat-divider>
       <button mat-menu-item (click)="logout()">
         <mat-icon>logout</mat-icon>
         <span>Cerrar Sesión</span>
       </button>
     </mat-menu>
-  </div >
+  </div>
 
 </mat-toolbar>

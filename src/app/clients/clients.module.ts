@@ -8,9 +8,8 @@ import { SharedtableModule } from '../sharedtable/sharedtable.module';
 import { MedidoresListComponent } from './medidores/medidores-list/medidores-list.component';
 import { IngresoEditMedidorComponent } from './medidores/ingreso-edit-medidor/ingreso-edit-medidor.component';
 import { PrincipalComponent } from './page-inicio/principal/principal.component';
-import { SpinerComponent } from '../sharedtable/components/spiner/spiner.component';
 import { ListClientsPasivosComponent } from './pages/list-clients-pasivos/list-clients-pasivos.component';
-
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -25,7 +24,8 @@ import { ListClientsPasivosComponent } from './pages/list-clients-pasivos/list-c
     CommonModule,
     ClientsRoutingModule,
     SharedModule,
-    SharedtableModule
+    SharedtableModule,
+    MatAutocompleteModule
     
   ],
   exports: [

@@ -1,4 +1,12 @@
 <gst-container>
+    <div fxLayout fxLayoutGap="20px">
+        <mat-form-field appearance="outline">
+            <mat-label>Buscar</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="Ingrese datos a buscar" #input
+                autocomplete="off">
+        </mat-form-field>
+    </div>
+    <mat-divider></mat-divider>
     <ng-scrollbar class="heightMaxScrollbar">
         <gst-table [data]="dataSource" [metaDataColumns]="metaDataColumns" (actionClicked)="ejecutarAccion($event.accion, $event.rowData)">
         </gst-table>

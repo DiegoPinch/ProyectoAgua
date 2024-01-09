@@ -7,14 +7,20 @@ import { AuthGuard } from '../core/serve/auth.guard';
 import { PageDosfacturasComponent } from './page/page-verfacturas/page-dosfacturas.component';
 
 const routes: Routes = [
-  { path: '', component: PageFacturasComponent, children: [
-    { path: '', redirectTo: 'cobrarFacturas', pathMatch: 'full' },
-    { path: 'cobrarFacturas', component: PageCobrarfacturaComponent },
-    { path: 'verFacturas', component: PageDosfacturasComponent },
-    
-  ]}
-  
-  
+  {
+    path: '', component: PageFacturasComponent, children: [
+      { path: '', redirectTo: 'cobrarFacturas', pathMatch: 'full' },
+      {
+        path: 'cobrarFacturas', component: PageCobrarfacturaComponent,
+        canActivate: [AuthGuard],
+        data: { roles: ['ADMINISTRADOR'] },
+      },
+      { path: 'verFacturas', component: PageDosfacturasComponent },
+
+    ]
+  }
+
+
 ];
 
 @NgModule({

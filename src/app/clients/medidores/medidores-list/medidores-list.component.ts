@@ -30,7 +30,7 @@ export class MedidoresListComponent {
     { field: "LEC_ING", title: "LEC. INGRESO" },
     { field: "acciones", title: "ACCIONES" }
   ];
-  
+
   totalRecords: number = 0;
   dataSource!: MatTableDataSource<any>;
   keypadButtons: KeypadButton[] = [
@@ -74,13 +74,12 @@ export class MedidoresListComponent {
         { icon: 'delete', tooltip: 'Eliminar', color: 'warn' },
       ]
     };
-    
+
   }
 
   ingresarMedidor(row: any = null) {
     const dialogRef: MatDialogRef<IngresoEditMedidorComponent> = this.dialog.open(IngresoEditMedidorComponent);
     dialogRef.afterClosed().subscribe((formData) => {
-      console.log("entra en ingresar: "+formData);
       if (formData) {
         formData.ESTADO = 'ACTIVO';
         formData.CODIGO_QR = 'NULL';
@@ -91,6 +90,7 @@ export class MedidoresListComponent {
           },
           (error) => {
             // Manejo de errores
+            this.showMessage("Error de servidor...");
           }
         );
       }
@@ -146,14 +146,15 @@ export class MedidoresListComponent {
       }
     })
   }
-  pasardatos(personaDatas: any){
+
+  pasardatos(personaDatas: any) {
     const dialogRef = this.dialog.open(IngresoEditMedidorComponent, {
       data: { personaDatas },
-      
+
     });
     dialogRef.afterClosed().subscribe((formData) => {
-      console.log("entra en ingresar: "+formData);
       if (formData) {
+        console.log(formData);
         formData.ESTADO = 'ACTIVO';
         formData.CODIGO_QR = 'NULL';
         this._servMedidores.ingresarMedidor(formData).subscribe(
@@ -164,6 +165,8 @@ export class MedidoresListComponent {
             // Manejo de errores
           }
         );
+      }else{
+        console.log("nose ");
       }
     });
   }
@@ -182,14 +185,17 @@ export class MedidoresListComponent {
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
-    this.dataSource.filter = filterValue;
+    const filteredData = this.records.filter(item =>
+      item.CED_USU.toLowerCase().includes(filterValue) ||
+      item.NOMBRE_COMPLETO.toLowerCase().includes(filterValue)
+
+    );
+    this.dataSource = new MatTableDataSource<any>(filteredData);
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
   }
 
-  
- 
   changePage(page: number) {
     const pageSize = environment.PAGE_SIZE;
     const skip = pageSize * page;

@@ -7,25 +7,35 @@ import { AuthService } from '../../serve/auth.service';
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css']
 })
-export class MenuComponent implements OnInit{
+export class MenuComponent implements OnInit {
   listMenu: IMenu[] = [];
-  expanded=true;
+  expanded = true;
   @Output() onToggleExpanded: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor(private menuService:MenuService, private authService: AuthService){ 
-      this.listMenu = menuService.getMenu()
+  constructor(private menuService: MenuService, private authService: AuthService) {
+    this.listMenu = menuService.getMenu()
   }
 
   activeButton: string | null = null;
 
   ngOnInit() {
-    
+    const storedActiveButton = localStorage.getItem('activeButton');
+    this.activeButton = storedActiveButton || null; // Asignar null si no hay valor en el localStorage
   }
+
+  
 
   onButtonClick(route: string): void {
     this.activeButton = route;
+    localStorage.setItem('activeButton', this.activeButton);
+    localStorage.removeItem('activeSocios');
+    localStorage.removeItem('activeLecturas');
+    localStorage.removeItem('activeFacturas');
+    localStorage.removeItem('activeSesiones');
+    localStorage.removeItem('activeAdministracion');
   }
-  toggleExpanded(){
+
+  toggleExpanded() {
     this.expanded = !this.expanded;
     this.onToggleExpanded.emit(this.expanded);
   }
@@ -33,4 +43,7 @@ export class MenuComponent implements OnInit{
   isSessionActive(): boolean {
     return !!this.authService.obtenerUsuario(); // Devuelve true si hay un usuario, false si es null
   }
+
+  
+
 }

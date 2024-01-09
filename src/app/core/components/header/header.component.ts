@@ -1,7 +1,8 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FechahoraService } from 'src/app/services/time/fechahora.service';
 import { AuthService } from '../../serve/auth.service';
 import { Router } from '@angular/router';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
   selector: 'gst-header',
@@ -13,7 +14,7 @@ export class HeaderComponent implements OnInit {
   usuarioNombre: string = '';
   nombreUsuario: string = '';
   showSpinner: boolean = false;
-
+  
   constructor(private fechahoraService: FechahoraService,
     public authService: AuthService,
     private router: Router) {
@@ -30,11 +31,6 @@ export class HeaderComponent implements OnInit {
       });
   }
  
-  @HostListener('document:mousemove', ['$event'])
-  @HostListener('document:keypress', ['$event'])
-  reiniciarTemporizadorInactividad(): void {
-    this.authService.iniciarTemporizadorInactividad();
-  }
 
   ngOnInit() {
     this.showSpinner = true;
@@ -63,5 +59,10 @@ export class HeaderComponent implements OnInit {
   logout(): void {
     this.authService.cerrarSesion();
     this.router.navigate(['/servicios']);
+    localStorage.removeItem('activeButton');
+
+    localStorage.removeItem('tarifaRiego');
+    localStorage.removeItem('tarifaConsumo');
   }
+  
 }

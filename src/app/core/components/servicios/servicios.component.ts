@@ -1,5 +1,6 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AuthService } from '../../serve/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'gst-servicios',
@@ -9,10 +10,16 @@ import { AuthService } from '../../serve/auth.service';
 export class ServiciosComponent implements OnInit {
   isUserAuthenticated!: boolean ;
 
-  constructor(public authService: AuthService) {
+  constructor(public authService: AuthService, private router: Router) {
    
   }
+  
 
+  abrirComponente(): void {
+    
+    this.router.navigate(['/servicios/configuracion']);
+  }
+  
   ngOnInit(): void {
     // Verifica si hay una sesión activa
     
@@ -22,4 +29,6 @@ export class ServiciosComponent implements OnInit {
   toggleExpanded(expanded: boolean) {
     this.expanded = expanded;
   }
+
+  
 }

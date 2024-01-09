@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ServeLoginService } from '../../serve/serve-login.service';
 import { AuthService } from '../../serve/auth.service';
 import { Router } from '@angular/router';
-import { MenuService } from 'src/app/services/menu.service';
+import { ServeTarifaAguaService } from 'src/app/configuracion/serve/serve-tarifa-agua.service';
+import { MensajeokComponent } from '../mensajeok/mensajeok.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'gst-loguin',
@@ -11,96 +13,110 @@ import { MenuService } from 'src/app/services/menu.service';
 })
 export class LoguinComponent implements OnInit {
   showSpinner: boolean = false;
-  tooglePassword=true;
+  tooglePassword = true;
   username: string = '';
   password: string = '';
-  checkboxType: string | null = null;
+  fieldsCompleted: boolean = false;
+  
+  constructor(private _servAdminstracion: ServeLoginService, private authService: AuthService, private router: Router, public dialog: MatDialog) { }
 
-  constructor(private _servAdminstracion: ServeLoginService, private authService: AuthService, private router: Router, private menuService: MenuService) { }
   ngOnInit(): void {
     if (this.authService.obtenerUsuario()?.cargo == 'LECTOR') {
       this.router.navigate(['/servicios/lecturas']);
-    } if (this.authService.obtenerUsuario()?.cargo == 'ADMIN') {
+    } if (this.authService.obtenerUsuario()?.cargo == 'ADMINISTRADOR') {
       this.router.navigate(['/servicios/clientes']);
     } if (this.authService.obtenerUsuario()?.cargo == 'TESORERO') {
       this.router.navigate(['/servicios/facturas']);
     } if (this.authService.obtenerUsuario()?.cargo == 'CLIENTE') {
-      this.router.navigate(['/servicios/facturas']);
+      this.router.navigate(['/servicios/facturas/verFacturas']);
     } if (this.authService.obtenerUsuario()?.cargo == 'SECRETARIO') {
       this.router.navigate(['/servicios/facturas']);
     }
   }
-  
-  onCheckboxChange(type: string) {
-    if (this.checkboxType === type) {
-      this.checkboxType = null;
-    } else {
-      this.checkboxType = type;
-    }
-  }
+
 
   async login() {
     try {
-      this.showSpinner = true; 
-      if (this.checkboxType === 'Administracion') {
-        const response = await this._servAdminstracion.obtenerAdministracion(this.username, this.password);
-        this.procesarRespuesta(response);
-      } else if (this.checkboxType === 'Cliente') {
-        const response = await this._servAdminstracion.obtenerCliente(this.username, this.password);
-        this.procesarRespuesta(response);
+      this.showSpinner = true;
+      const responseCliente = await this._servAdminstracion.obtenerCliente(this.username, this.password);
+      if (responseCliente && Object.keys(responseCliente).length > 0) {
+        this.procesarRespuestaCliente(responseCliente, 'CLIENTE');
+        console.log(responseCliente);
       } else {
-        alert('Seleccione un tipo de usuario');
-      this.showSpinner = false; 
-
+        const responseAdmin= await this._servAdminstracion.obtenerAdministracion(this.username, this.password);
+        if (responseAdmin && Object.keys(responseAdmin).length > 0) {
+          this.procesarRespuestaAdmin(responseAdmin, 'ADMINISTRADOR');
+        } else {
+          // Si no se encontraron datos ni como administrador ni como cliente
+          alert('No se encontraron datos');
+          this.showSpinner = false;
+        }
       }
     } catch (error) {
-      alert('Error al autenticar');
-      this.showSpinner = false; 
-
+      console.error('Error al autenticar:', error);
+      this.mensajeError("Error al autenticar, verifique los datos.");
+      this.showSpinner = false;
     }
   }
-
-  procesarRespuesta(response: any[]) {
-    if (this.checkboxType == 'Cliente') {
-      if (response.length > 0) {
-        const usuario = response[0];
+  
+  procesarRespuestaCliente(response: any[], tipo: string){
+    if(response.length>0){
+      const usuario = response[0];
+      if (tipo === 'CLIENTE') {
         const nombre = usuario.NOM_USU + ' ' + usuario.APE_USU;
         const cedula = usuario.CED_USU;
         const cargo = 'CLIENTE';
         this.authService.iniciarSesion({ nombre, cedula, cargo });
         this.router.navigate(['servicios/facturas/verFacturas']);
-      } else {
-        alert('No se encontraron datos');
-        this.showSpinner =false;
-      }
-    } else if (this.checkboxType == 'Administracion') {
-      if (response.length > 0) {
-        const usuario = response[0];
-        const nombre = usuario.NOM_USU + ' ' + usuario.APE_USU;
-        const cedula = usuario.CED_USU_DIR;
-        const cargo = usuario.CARGO;
-        this.authService.iniciarSesion({ nombre, cedula, cargo });
-        if (cargo === 'ADMIN') {
-          this.router.navigate(['servicios/clientes']);
-        } else if (cargo === 'LECTOR') {
-          this.router.navigate(['/servicios/lecturas']);
-        } else if (cargo === 'TESORERO') {
-          this.router.navigate(['servicios/facturas']);
-        } else if (cargo === 'SECRETARIO') {
-          this.router.navigate(['servicios/sesiones']);
-        }
-      } else {
-        alert('No se encontraron datos');
-        this.showSpinner =false;
+
       }
     }
   }
-
-  formValid(): boolean {
-    return !!(this.username && this.password);
-  }
-  formValidate(): boolean {
-    return !!this.username && !!this.password && !!this.checkboxType; 
-  }
   
+  
+  procesarRespuestaAdmin(response: any, tipo: string) {
+    if (response) {
+      if (tipo === 'ADMINISTRADOR') {
+        const nombre = response.NOM_USU + ' ' + response.APE_USU;
+        const cedula = response.CED_USU_DIR;
+        const cargo = response.CARGO;
+        this.authService.iniciarSesion({ nombre, cedula, cargo });
+        switch (cargo) {
+          case 'ADMINISTRADOR':
+            this.router.navigate(['servicios/clientes']);
+            break;
+          case 'LECTOR':
+            this.router.navigate(['/servicios/lecturas']);
+            break;
+          case 'TESORERO':
+            this.router.navigate(['servicios/facturas']);
+            break;
+          case 'SECRETARIO':
+            this.router.navigate(['servicios/sesiones']);
+            break;
+          default:
+            alert('Cargo no reconocido');
+            this.showSpinner = false;
+            break;
+        }
+      }
+    } else {
+      alert('No se encontraron datos');
+      this.showSpinner = false;
+    }
+  }
+
+  areFieldsFilled(): boolean {
+    return this.username.trim().length > 0 && this.password.trim().length > 0;
+  }
+ 
+  mensajeError(mensaje: string) {
+    const dialogRef = this.dialog.open(MensajeokComponent, {
+      data: {
+        title: 'Aviso',
+        message: mensaje
+      }
+    });
+  }
+
 }

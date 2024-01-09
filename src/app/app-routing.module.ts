@@ -25,7 +25,7 @@ const routes: Routes = [
         loadChildren: () => import('./clients/clients.module').then((m) => m.ClientsModule),
         
         canActivate: [AuthGuard],
-        data: { roles: ['ADMIN'] },
+        data: { roles: ['ADMINISTRADOR'] },
         
       },
       {
@@ -33,7 +33,7 @@ const routes: Routes = [
         loadChildren: () => import('./lecturas/lecturas.module').then((m) => m.LecturasModule),
         
         canActivate: [AuthGuard],
-        data: { roles: ['ADMIN', 'LECTOR'] },
+        data: { roles: ['ADMINISTRADOR', 'LECTOR'] },
         
       },
       {
@@ -41,24 +41,26 @@ const routes: Routes = [
         loadChildren: () => import('./facturas/facturas.module').then((m) => m.FacturasModule),
         
         canActivate: [AuthGuard],
-        data: { roles: ['ADMIN','TESORERO','SECRETARIO','CLIENTE']},
+        data: { roles: ['ADMINISTRADOR','TESORERO','SECRETARIO','CLIENTE']},
         
       },
       {
         path: 'sesiones', //es actas
         loadChildren: () => import('./sesiones/sesiones.module').then((m) => m.SesionesModule),
-        
         canActivate: [AuthGuard],
-        data: { roles: ['ADMIN','SECRETARIO'] },
-        
+        data: { roles: ['ADMINISTRADOR','SECRETARIO'] },
       },
       {
         path: 'administracion',
         loadChildren: () => import('./administracion/administracion.module').then((m) => m.AdministracionModule),
-        
         canActivate: [AuthGuard],
-        data: { roles: ['ADMIN'] },
-        
+        data: { roles: ['ADMINISTRADOR'] },
+      },
+      {
+        path: 'configuracion',
+        loadChildren: () => import('./configuracion/configuracion.module').then((m) => m.ConfiguracionModule),
+        canActivate: [AuthGuard],
+        data: { roles: ['ADMINISTRADOR'] },
       },
     ],
   },

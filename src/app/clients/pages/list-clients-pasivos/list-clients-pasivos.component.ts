@@ -73,18 +73,27 @@ export class ListClientsPasivosComponent {
         if (result) {
           this._servPersona.reingresoPersona(rowData.CED_USU).subscribe((data: any[]) => {
             this.cargarDatos();
-            this.showMessage('Reingreso de usuario con exito')
+            this.showMessage('Reingreso de usuario con éxito')
           });
         }
       })
     }
   }
 
-  
-
-  eliminarPersona(rowData: any) {
-    
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    const filteredData = this.records.filter(item =>
+      item.NOM_USU.toLowerCase().includes(filterValue) ||
+      item.CED_USU.toLowerCase().includes(filterValue) 
+      
+    );
+    this.dataSource = new MatTableDataSource<any>(filteredData);
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
+
+
   showMessage(message: string, duration: number = 5000) {
     this.snackBar.open(message, '', { duration })
   }

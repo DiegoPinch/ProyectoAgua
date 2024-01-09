@@ -8,10 +8,20 @@ import { Router } from '@angular/router';
   styleUrls: ['./principal.component.css']
 })
 export class PrincipalComponent {
-  constructor(private router: Router) { }
-  onTabChange(event: MatTabChangeEvent): void {
-    const selectedIndex = event.index;
+  activeTabIndex: number = 0;
 
+  constructor(private router: Router) {
+    const storedTabIndex = localStorage.getItem('activeSocios');
+    if (storedTabIndex !== null) {
+      this.activeTabIndex = +storedTabIndex; // Convertir a número
+    }
+   }
+
+  onTabChange(event: MatTabChangeEvent): void {
+    this.activeTabIndex = event.index;
+    
+    localStorage.setItem('activeSocios', this.activeTabIndex.toString());
+    const selectedIndex = event.index;
     switch (selectedIndex) {
       case 0:
         this.router.navigateByUrl('/servicios/clientes/usuarios');

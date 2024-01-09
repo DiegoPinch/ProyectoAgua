@@ -1,14 +1,11 @@
-<mat-toolbar class="custom-toolbar">
-  <div fxLayout="row" fxLayoutGap="10px">
-    <button  mat-raised-button color="accent" routerLink="ingresar" class="custom-button">
-      <mat-icon>add</mat-icon> Ingresar Lecturas
-    </button>
-    <button  mat-raised-button color="accent"  routerLink="editar" class="custom-button">
-      <mat-icon>edit</mat-icon> Editar Lecturas
-    </button>
-  </div>
-</mat-toolbar>
+<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" (selectedTabChange)="onTabChange($event)"
+    [selectedIndex]="activeTabIndex"> <!-- Establecer el índice de la pestaña activa -->
 
+    <mat-tab label="INGRESAR LECTURAS"></mat-tab>
+    <mat-tab label="EDITAR LECTURAS"></mat-tab>
+
+</mat-tab-group>
+<mat-divider></mat-divider>
 <body>
-<router-outlet></router-outlet>
+    <router-outlet></router-outlet>
 </body>

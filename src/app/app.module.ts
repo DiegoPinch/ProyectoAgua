@@ -8,6 +8,9 @@ import { IconService } from './services/icon.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ClientsModule } from './clients/clients.module';
 import { SharedModule } from './shared/shared.module';
+import { UserActivityDirective } from './core/serve/user-activity.directive';
+
+
 
 
 
@@ -15,6 +18,7 @@ import { SharedModule } from './shared/shared.module';
 @NgModule({
   declarations: [
     AppComponent,
+    
     //aqui le importan los otros clases
   ],
   imports: [
@@ -24,12 +28,12 @@ import { SharedModule } from './shared/shared.module';
     CoreModule,
     HttpClientModule,
     ClientsModule,
-    SharedModule,
-    
+    SharedModule
     
   ],
   exports: [
     
+
   ],
   providers: [],
   bootstrap: [AppComponent]

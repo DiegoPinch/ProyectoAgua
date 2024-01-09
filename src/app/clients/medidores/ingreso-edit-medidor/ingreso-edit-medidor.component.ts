@@ -3,7 +3,9 @@ import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/fo
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FechahoraService } from 'src/app/services/time/fechahora.service';
 import { ServiceMedidores } from '../service/service-medidores';
-import { AbrirDialogoComponent } from 'src/app/core/components/abrir-dialogo/abrir-dialogo.component';
+import { MensajeokComponent } from 'src/app/core/components/mensajeok/mensajeok.component';
+import { ServpersonaService } from '../../pages/modelo/persona/servpersona.service';
+import { Persona } from '../../pages/modelo/persona/interfaces/persona';
 
 @Component({
   selector: 'gst-ingreso-edit-medidor',
@@ -20,14 +22,15 @@ export class IngresoEditMedidorComponent {
   fechaActual: string = '';
   isCedulaEditable: boolean = true;
   showSpinnerA: boolean = false;
+
   constructor(private reference: MatDialogRef<IngresoEditMedidorComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private fechaHoraService: FechahoraService,
     public dialog: MatDialog,
-    private _servMedidores: ServiceMedidores) {
+    private _servMedidores: ServiceMedidores, private _servPersona: ServpersonaService) {
     this.title = this.data && this.data.isEdit ? 'EDITAR MEDIDOR' : 'NUEVO MEDIDOR';
     this.fecha();
-  
+
   }
 
   ngAfterViewInit() {
@@ -45,13 +48,47 @@ export class IngresoEditMedidorComponent {
     }
   }
 
+  
+  selectedName: string | null = null;
+  usuarios: Persona[] = []; // Supongamos que aquí tienes tus usuarios
+  filteredUsers: Persona[] = [];
+
+  applyFilter(event: any): void {
+    const query = event.target.value;
+    if (query.length >= 3) {
+      this._servPersona.getPersona(query).subscribe(
+        (resultados) => {
+          this.filteredUsers = resultados;
+
+        },
+        (error) => {
+          console.error('Error al buscar personas:', error);
+        }
+      );
+    } else {
+      this.filteredUsers = this.usuarios; // Restaurar la lista completa cuando la consulta es menor a 3 caracteres
+      this.selectedName = null; // Reinicia selectedName cuando la consulta es menor a 3 caracteres
+    }
+  }
+
+  setValueAndFilter(user: Persona, inputField: HTMLInputElement): void {
+    const fullName = `${user.CED_USU}`;
+    inputField.value = fullName;
+    this.group.get('CED_USU_MED')?.patchValue(fullName);
+    this.selectedName = `${user.APE_USU} ${user.NOM_USU}`;
+    this.applyFilter({ target: { value: fullName } }); // Aplicar filtro con el valor seleccionado
+    setTimeout(() => {
+      inputField.blur();
+    }, 0);
+  }
+
   ngOnInit(): void {
     if (this.data && this.data.isEdit) {
       this.loadForm(this.data.rowData);
       this.isCedulaEditable = false;
     } else {
       this.loadForm();
-      
+
     }
   }
 
@@ -61,9 +98,10 @@ export class IngresoEditMedidorComponent {
       (data: any) => {
         const fecha = new Date(data.datetime);
         this.fechaActual = this.formatearFecha(fecha);
+        this.showSpinnerA = false;
         if (!this.data || !this.data.isEdit) {
           this.loadForm();
-          this.showSpinnerA = false;
+
         }
       },
       error => {
@@ -91,7 +129,7 @@ export class IngresoEditMedidorComponent {
     };
 
     this.group = new FormGroup({
-      CED_USU_MED: new FormControl({ value: formData.CED_USU_MED, disabled: !this.isCedulaEditable }, [Validators.required, Validators.pattern('^[0-9]*$')]),
+      CED_USU_MED: new FormControl({ value: formData.CED_USU_MED, disabled: !this.isCedulaEditable }, [Validators.required, Validators.pattern('^[0-9]*$'), this.validarCedula]),
       MARCA_MED: new FormControl(formData.MARCA_MED, Validators.required),
       OBS_MED: new FormControl(formData.OBS_MED, Validators.required),
       AÑO_INGRESO: new FormControl(formData.AÑO_INGRESO, Validators.required),
@@ -99,11 +137,11 @@ export class IngresoEditMedidorComponent {
       CODIGO_QR: new FormControl(formData.CODIGO_QR),
       LEC_ING: new FormControl(formData.LEC_ING, [Validators.required, this.verificarLecturaIngreso.bind(this)]),
     });
-    
-      if (this.data && this.data.personaDatas && this.data.personaDatas.CED_USU) {
-        this.group.get('CED_USU_MED')?.setValue(this.data.personaDatas.CED_USU);
-      }
-    
+
+    if (this.data && this.data.personaDatas && this.data.personaDatas.CED_USU) {
+      this.group.get('CED_USU_MED')?.setValue(this.data.personaDatas.CED_USU);
+    }
+
     if (rowData && rowData.TIPO_MED) {
       this.selectedTipo = rowData.TIPO_MED;
     }
@@ -113,6 +151,7 @@ export class IngresoEditMedidorComponent {
     const lecturaIngreso = control.value;
     return lecturaIngreso >= 0 ? null : { lecturaInvalida: true };
   }
+
   save() {
     if (this.group.value.LEC_ING >= 0) {
       if (this.data && this.data.isEdit) {
@@ -124,23 +163,58 @@ export class IngresoEditMedidorComponent {
             this.mensajeError("Usuario con Medidor existente")
           } else {
             const record = this.group.value;
+            console.log(record)
             this.reference.close(record);
           }
         });
       }
-
     } else {
       this.mensajeError("Lectura de Ingreso Incorrecta")
     }
 
   }
+
   mensajeError(mensaje: string) {
-    const dialogRef = this.dialog.open(AbrirDialogoComponent, {
+    const dialogRef = this.dialog.open(MensajeokComponent, {
       data: {
         title: 'Aviso',
         message: mensaje
       }
     });
+  }
 
+  validarCedula(control: AbstractControl): { [key: string]: any } | null {
+    const cedula = control.value;
+    if (!/^\d{10}$/.test(cedula)) {
+      return { formatoInvalido: true };
+    }
+    if (/^(\d)\1{9}$/.test(cedula)) {
+      return { cedulaInvalida: true };
+    }
+    if (cedula.length > 10) {
+      return { formatoInvalido: true };
+    }
+    const provincia = Number(cedula.substr(0, 2));
+    const tercerDigito = Number(cedula.charAt(2));
+    if (provincia < 0 || provincia > 24 || tercerDigito < 0 || tercerDigito > 6) {
+      return { cedulaInvalida: true };
+    }
+    let suma = 0;
+    for (let i = 0; i < 9; i++) {
+      let digito = Number(cedula.charAt(i));
+      if (i % 2 === 0) {
+        digito *= 2;
+        if (digito > 9) {
+          digito -= 9;
+        }
+      }
+      suma += digito;
+    }
+    const decenaSuperior = Math.ceil(suma / 10) * 10;
+    const digitoVerificador = decenaSuperior - suma;
+    if (digitoVerificador !== Number(cedula.charAt(9))) {
+      return { cedulaInvalida: true };
+    }
+    return null; // La cédula es válida
   }
 }

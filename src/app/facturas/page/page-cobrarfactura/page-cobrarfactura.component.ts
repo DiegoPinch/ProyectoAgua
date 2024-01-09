@@ -8,6 +8,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { PDFDocument } from 'pdf-lib';
 import { saveAs } from 'file-saver';
 import { ServpersonaService } from 'src/app/clients/pages/modelo/persona/servpersona.service';
+import { MensajeokComponent } from 'src/app/core/components/mensajeok/mensajeok.component';
+import { Persona } from 'src/app/clients/pages/modelo/persona/interfaces/persona';
 
 @Component({
   selector: 'gst-page-cobrarfactura',
@@ -19,8 +21,10 @@ export class PageCobrarfacturaComponent {
   totalCarrito = 0;
   records: any[] = [];
   cedula!: string;
+  cedulaObtenida!: string;
   datos: any[] = [];
   nombresApellidos: string[] = [];
+  nombresBuscar: string[] = [];
   filaActual: number = 0;
   mesActual!: string;
   showSpinner: boolean = false;
@@ -33,6 +37,10 @@ export class PageCobrarfacturaComponent {
   }
 
   ngOnInit() {
+    this.ObtenerTodosLosUsuarios()
+  }
+
+  ObtenerTodosLosUsuarios() {
     this.showSpinner = true
     this._servPersona.getPersonaNormal().subscribe((data: any[]) => {
       this.datos = data;
@@ -45,23 +53,18 @@ export class PageCobrarfacturaComponent {
 
   actualizarCedulaActual() {
     this.cedula = this.datos[this.filaActual]?.CED_USU;
-
   }
 
   cambiarFila(siguiente: boolean) {
-    
     if (siguiente) {
       if (this.filaActual < this.nombresApellidos.length - 1) {
         this.filaActual++;
-       
       }
     } else {
       if (this.filaActual > 0) {
         this.filaActual--;
-        
       }
     }
-    
     this.actualizarCedulaActual();
     this.cargarDatos();
     this.filasSeleccionadas = [];
@@ -80,7 +83,7 @@ export class PageCobrarfacturaComponent {
   ];
 
   cargarDatos() {
-    this.showSpinner =true;
+    this.showSpinner = true;
     if (this.cedula) {
       this._servFacturas.getFacturas(this.cedula).subscribe((data: any[]) => {
         this.records = data.map(item => {
@@ -100,9 +103,43 @@ export class PageCobrarfacturaComponent {
         });
         this.totalRecords = this.records.length;
         this.changePage(0);
-        this.showSpinner =false;
+        this.showSpinner = false;
       });
     }
+  }
+
+  detectInput(event: KeyboardEvent) {
+    this.cedulaObtenida = (event.target as HTMLInputElement).value;
+    if (!this.cedulaObtenida.trim()) {
+      this.cedulaObtenida = ''
+      this.nombresApellidos = this.datos.map(item => item.APE_USU + ' ' + item.NOM_USU);
+      this.actualizarCedulaActual();
+      this.cargarDatos();
+    }
+  }
+
+  cargarDatosBuscar(cedula: string) {
+    this.showSpinner = true;
+    this._servFacturas.getFacturas(cedula).subscribe((data: any[]) => {
+      this.records = data.map(item => {
+        return {
+          ID_FACT: item.ID_FACT,
+          TIPO_MED: item.TIPO_MED,
+          MES_CON: item.MES_CON,
+          LEC_ANT: item.LEC_ANT,
+          LEC_ACT: item.LEC_ACT,
+          EXC_LECTURA: item.EXC_LECTURA,
+          EST_FACT: item.EST_FACT,
+          SUM_TOTAL: item.SUM_TOTAL,
+          acciones: [
+            { icon: 'shopping_cart', tooltip: 'Agregar', color: 'primary' },
+          ]
+        };
+      });
+      this.totalRecords = this.records.length;
+      this.changePage(0);
+      this.showSpinner = false;
+    });
   }
 
   filtrarMetaColumnas(metaDataColumns: MetaDataColumn[]): MetaDataColumn[] {
@@ -112,12 +149,11 @@ export class PageCobrarfacturaComponent {
   agrgarCarrito(acciones: any, rowData: any) {
     if (acciones.icon === 'shopping_cart') {
       const filaExistente = this.filasSeleccionadas.find(item => item.ID_FACT === rowData.ID_FACT);
-
       if (!filaExistente) {
         this.filasSeleccionadas.push(rowData);
         this.totalCarrito += rowData.SUM_TOTAL;
       } else {
-        alert('Esta fila ya está en el carrito.');
+        this.mensajeError("Esta fila ya se encuentra agregada a la Factura")
       }
     }
   }
@@ -130,25 +166,39 @@ export class PageCobrarfacturaComponent {
     }
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
-    const filteredData = this.datos.filter(item => {
-      const fullName = `${item.APE_USU.toLowerCase()} ${item.NOM_USU.toLowerCase()}`;
-      return (
-        item.CED_USU.toLowerCase().includes(filterValue) ||
-        fullName.includes(filterValue)
+  usuarios: Persona[] = []; // Supongamos que aquí tienes tus usuarios
+  filteredUsers: Persona[] = [];
+
+  buscar(event: any) {
+    const query = event.target.value;
+    if (query.length >= 3) {
+      this._servPersona.getPersona(query).subscribe(
+        (resultados) => {
+          this.filteredUsers = resultados;
+
+        },
+        (error) => {
+          console.error('Error al buscar personas:', error);
+        }
       );
-    });
-  
-    this.nombresApellidos = filteredData.map(item => item.APE_USU + ' ' + item.NOM_USU);
-  
-    const nuevaFila = this.nombresApellidos.indexOf(this.datos[this.filaActual].APE_USU + ' ' + this.datos[this.filaActual].NOM_USU);
-    if (nuevaFila !== -1) {
-      this.filaActual = nuevaFila;
-      this.actualizarCedulaYDatos(); // Cargar datos con la cédula actualizada
+    } else {
+      this.filteredUsers = this.usuarios;
     }
   }
-  
+
+  setValueAndFilter(user: Persona, inputField: HTMLInputElement): void {
+    const fullName = `${user.CED_USU}`;
+    inputField.value = fullName;
+    this.buscar({ target: { value: fullName } });
+    this.cedulaObtenida = user.CED_USU;
+    this.nombresBuscar = [user.APE_USU + ' ' + user.NOM_USU];
+    this.cedula = user.CED_USU;
+    this.cargarDatosBuscar(this.cedulaObtenida)
+    setTimeout(() => {
+      inputField.blur();
+    }, 0);
+  }
+
   actualizarCedulaYDatos() {
     this.cedula = this.datos[this.filaActual]?.CED_USU;
     this.cargarDatos();
@@ -163,7 +213,7 @@ export class PageCobrarfacturaComponent {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.showSpinner =true;
+        this.showSpinner = true;
         if (this.totalCarrito > 0) {
           const updateObservables = this.filasSeleccionadas.map((fila) => {
             const id = fila.ID_FACT;
@@ -189,17 +239,17 @@ export class PageCobrarfacturaComponent {
                   saveAs(blob, 'facturas.pdf');
                   this.filasSeleccionadas = [];
                   this.totalCarrito = 0;
-                  this.showSpinner =false;
+                  this.showSpinner = false;
                 },
                 (error) => {
                   console.error('Error al obtener URLs de facturas');
-                  this.showSpinner =false;
+                  this.showSpinner = false;
                 }
               );
             },
             (error) => {
               console.error('Error en alguna de las actualizaciones');
-              this.showSpinner =false;
+              this.showSpinner = false;
             }
           );
         }
@@ -247,6 +297,15 @@ export class PageCobrarfacturaComponent {
     const pageSize = environment.PAGE_SIZE
     const skip = pageSize * page
     this.datas = this.records.slice(skip, skip + pageSize)
+  }
+
+  mensajeError(mensaje: string): void {
+    this.dialog.open(MensajeokComponent, {
+      data: {
+        title: 'Aviso',
+        message: mensaje
+      }
+    });
   }
 
 }

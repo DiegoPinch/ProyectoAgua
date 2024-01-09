@@ -1,7 +1,12 @@
-.highLine:hover{
-    background-color: rgb(0,0, 0, 0.1);
+.highLine:hover {
+    background-color: rgb(0, 0, 0, 0.1);
 }
+
 .head th {
     font-size: 20px;
 }
 
+th {
+    background-color: #E0E0E0 !important;
+    ;
+}

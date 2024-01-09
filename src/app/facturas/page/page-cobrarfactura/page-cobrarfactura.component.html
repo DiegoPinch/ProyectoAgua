@@ -1,19 +1,40 @@
 <gst-spiner [showSpinner]="showSpinner"></gst-spiner>
 <div fxLayout fxLayoutAlign="center" class="container">
-    <mat-card fxFlex="1 1 95%" class="mat-elevation-z15">
+    <mat-card fxFlex="1 1 99%" class="mat-elevation-z15">
         <mat-card-content>
-            <div  fxLayout fxLayoutGap="20px">
-                <mat-form-field appearance="outline">
-                    <mat-label>Buscar</mat-label>
-                    <input matInput (keyup)="applyFilter($event)" placeholder="Ingrese datos a buscar" autocomplete="off">
-                  </mat-form-field>
-                    <button mat-raised-button color="accent" (click)="cambiarFila(false)" *ngIf="filaActual > 0"
-                        aria-label="Anterior">Atras</button>
-                    <h1 class="nombre-apellido">{{ nombresApellidos[filaActual] }}</h1>
-                    <button mat-raised-button color="accent" (click)="cambiarFila(true)"
-                        *ngIf="filaActual < nombresApellidos.length - 1" aria-label="Siguiente">
-                        Siguiente
+            <div fxLayout fxLayoutGap="20px">
+                <div fxLayout="column" >
+                    <mat-form-field appearance="outline">
+                        <mat-label>Buscar</mat-label>
+                        <input  matInput (keyup)="detectInput($event)" (input)="buscar($event)" [matMenuTriggerFor]="menu" #inputField
+                            placeholder="Ingrese la cédula" autocomplete="off">
+                    </mat-form-field>
+                    <mat-menu #menu="matMenu">
+                        <ng-container *ngFor="let user of filteredUsers">
+                            <button mat-menu-item (click)="setValueAndFilter(user, inputField)">
+                                <span style="font-size: 14px;">{{ user.NOM_USU }} {{ user.APE_USU }}</span>
+                            </button>
+                        </ng-container>
+                    </mat-menu>
+                </div>
+                
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <button mat-flat-button color="primary" (click)="cambiarFila(false)" *ngIf="filaActual > 0 && !cedulaObtenida"
+                        aria-label="Anterior">
+                        <mat-icon><span class="material-symbols-outlined">
+                                arrow_back_ios_new
+                            </span></mat-icon>
+                        Volver</button>
+                    <h1 class="nombre-apellido"*ngIf="!cedulaObtenida" >{{ nombresApellidos[filaActual]}}</h1>
+                    <h1 class="nombre-apellido" *ngIf="cedulaObtenida" >{{nombresBuscar}}</h1>
+                    <button mat-flat-button color="primary" (click)="cambiarFila(true)"
+                        *ngIf="filaActual < nombresApellidos.length - 1 && !cedulaObtenida" aria-label="Siguiente">
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            Siguiente
+                            <mat-icon class="small-icon">arrow_forward_ios</mat-icon>
+                        </div>
                     </button>
+                </div>
             </div>
         </mat-card-content>
     </mat-card>
@@ -22,25 +43,32 @@
 <div fxLayout="row" fxLayout.lt-md="column" fxLayoutWrap class="container">
     <div class="left-half">
         <div fxLayout fxLayoutAlign="center" class="container">
-            <mat-card fxFlex="1 1 95%" class="mat-elevation-z15">
-                <gst-table [data]="datas" [metaDataColumns]="filtrarMetaColumnas(metaDataColumns)"
-                    (actionClicked)="agrgarCarrito($event.accion, $event.rowData)"></gst-table>
-                <gst-paginator (onChangePage)="changePage($event)" [length]="totalRecords"></gst-paginator>
+            <mat-card fxFlex="1 1 99%" class="mat-elevation-z15">
+                <p *ngIf="datas && datas.length === 0">No hay datos disponibles en la tabla.</p>
+                <!-- Mostrar la tabla si hay datos -->
+                <ng-container *ngIf="datas && datas.length > 0">
+                    <gst-table [data]="datas" [metaDataColumns]="filtrarMetaColumnas(metaDataColumns)"
+                        (actionClicked)="agrgarCarrito($event.accion, $event.rowData)"></gst-table>
+                    <gst-paginator (onChangePage)="changePage($event)" [length]="totalRecords"></gst-paginator>
+                </ng-container>
             </mat-card>
         </div>
     </div>
-   
-    <div class="right-half">
+
+    <div class="right-half" *ngIf="datas && datas.length > 0">
         <mat-list role="list">
             <mat-list-item role="listitem" *ngFor="let fila of filasSeleccionadas" (click)="eliminarDelCarrito(fila)">
                 <div class="mat-list-item-content">
-                    {{ fila.TIPO_MED }} - {{ fila.MES_CON }} -{{ fila.SUM_TOTAL}}
+                    {{ fila.TIPO_MED }} | {{ fila.MES_CON }} | {{ fila.SUM_TOTAL}}
+                    <mat-divider></mat-divider>
                 </div>
             </mat-list-item>
         </mat-list>
         <h2>Suma Total: ${{ totalCarrito.toFixed(2) }}</h2>
         <div class="boton-cobrar-container">
-            <button mat-raised-button color="accent" (click)="cobrar()" [disabled]="totalCarrito === 0">Cobrar</button>
+            <button mat-flat-button color="primary" (click)="cobrar()" [disabled]="totalCarrito === 0">
+                <mat-icon>print</mat-icon>
+                Cobrar</button>
         </div>
     </div>
 </div>

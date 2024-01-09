@@ -9,28 +9,28 @@
         <div fxLayout="row" fxLayoutGap="24px">
             <mat-form-field appearance="outline">
                 <mat-label> Cédula </mat-label>
-                <input formControlName="CED_USU" matInput autocomplete="off">
+                <input #inputCedula formControlName="CED_USU" matInput autocomplete="off">
             </mat-form-field>
             <mat-form-field appearance="outline">
                 <mat-label> Nombres </mat-label>
-                <input formControlName="NOMBRES" matInput autocomplete="off">
+                <input #inputNombre  formControlName="NOMBRES" matInput autocomplete="off">
             </mat-form-field>
         </div>
         <div fxLayout="row" fxLayoutGap="24px">
             <mat-form-field appearance="outline">
                 <mat-label> Tipo </mat-label>
-                <input formControlName="TIP_MED" matInput autocomplete="off">
+                <input #inputMedidor formControlName="TIP_MED" matInput autocomplete="off">
             </mat-form-field>
             <mat-form-field appearance="outline">
                 <mat-label>Mes Actual</mat-label>
-                <input formControlName="MES_CON" matInput autocomplete="off">
+                <input #inputMes formControlName="MES_CON" matInput autocomplete="off">
             </mat-form-field>
         </div>
         <div fxLayout="row" fxLayoutGap="24px">
             <div>
                 <mat-form-field appearance="outline">
                     <mat-label> Lectura Anterior </mat-label>
-                    <input formControlName="LEC_ANT" matInput autocomplete="off">
+                    <input #inputAnterior formControlName="LEC_ANT" matInput autocomplete="off">
                     <span>{{estado}}</span>
                 </mat-form-field>
                 

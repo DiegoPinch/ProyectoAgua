@@ -25,7 +25,7 @@ export class ServiceObtenerFacService {
   }
   
   putFacturas( id: number): Observable<any> {
-    this.fecha= '2023-11-09';
+    this.fecha= new Date().toISOString().slice(0, 10)
     const body = { FEC_PAGO: this.fecha };
     return this.http.put(`${this.myAppUrl}${this.myApyUrl}/${this.fecha}/${id}`, body);
   }

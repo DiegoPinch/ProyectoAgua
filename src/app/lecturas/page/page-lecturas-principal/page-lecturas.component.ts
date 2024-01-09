@@ -1,7 +1,6 @@
-import {  ComponentFactoryResolver, ComponentRef, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { Component} from '@angular/core';
-import { PageIngresolecturasComponent } from '../page-ingresolecturas/page-ingresolecturas.component';
-import { PageeditarlecturasComponent } from '../pageeditarlecturas/pageeditarlecturas.component';
+import { Router } from '@angular/router';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 
 @Component({
@@ -12,7 +11,32 @@ import { PageeditarlecturasComponent } from '../pageeditarlecturas/pageeditarlec
 
 
 export class PageLecturasComponent   {
- 
+  activeTabIndex: number = 0;
+  constructor(private router: Router) {
+    const storedTabIndex = localStorage.getItem('activeLecturas');
+    if (storedTabIndex !== null) {
+      this.activeTabIndex = +storedTabIndex; // Convertir a número
+    }
+   }
+  onTabChange(event: MatTabChangeEvent): void {
+    this.activeTabIndex = event.index;
+    
+    localStorage.setItem('activeLecturas', this.activeTabIndex.toString());
+  
+    const selectedIndex = event.index;
+
+    switch (selectedIndex) {
+      case 0:
+        this.router.navigateByUrl('/servicios/lecturas/ingresar');
+        break;
+      case 1:
+        this.router.navigateByUrl('/servicios/lecturas/editar');
+        break;
+      default:
+        break;
+    }
+  }
+
 }
 
 

@@ -1,5 +1,5 @@
 export const environment = {
     production: false,
-    endpoint: 'https://facturaagua.herokuapp.com/',
-    PAGE_SIZE: 50
+    endpoint: 'http://localhost:3000/',
+    PAGE_SIZE: 10
 };

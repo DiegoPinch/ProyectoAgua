@@ -1,3 +1,20 @@
-<gst-actas>
+<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" (selectedIndexChange)="onTabChange($event)">
+    <mat-tab label="SESIONES"></mat-tab>
+    <mat-tab label="ACTAS"></mat-tab>
+    <mat-tab label="MINGAS"></mat-tab>
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <button mat-button [matMenuTriggerFor]="asistenciasMenu" style="color: #646262;">
+                ASISTENCIAS
+            </button>
+        </ng-template>
+        <mat-menu #asistenciasMenu="matMenu">
+            <button mat-menu-item>MINGAS</button>
+            <button mat-menu-item>SESIONES</button>
+        </mat-menu>
+    </mat-tab>
     
-</gst-actas>
+    <mat-tab label="MULTAS"></mat-tab>
+</mat-tab-group>
+<mat-divider></mat-divider>
+<router-outlet></router-outlet>

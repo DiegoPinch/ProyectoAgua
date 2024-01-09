@@ -19,11 +19,7 @@
                 <mat-icon matSuffix>{{tooglePassword ? 'lock' :   'lock_open'}}</mat-icon>
             </button>
         </mat-form-field>
-        <div fxLayout="row" fxLayoutAlign="start center"*ngIf="formValid()">
-          <mat-checkbox (change)="onCheckboxChange('Cliente')" [checked]="checkboxType === 'Cliente'">Cliente</mat-checkbox>
-          <mat-checkbox (change)="onCheckboxChange('Administracion')" [checked]="checkboxType === 'Administracion'">Administración</mat-checkbox>
-        </div>
-        <button mat-raised-button color="primary" class="login-button" type="submit" [disabled]="!formValidate()">Ingresar</button>
+        <button mat-raised-button color="primary" class="login-button" type="submit"  [disabled]="!areFieldsFilled()" >Ingresar</button>
       </form>
     </mat-card-content>
   </mat-card>

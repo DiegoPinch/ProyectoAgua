@@ -1,0 +1,10 @@
+<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" (selectedTabChange)="onTabChange($event)"
+  [selectedIndex]="activeTabIndex"> 
+  <mat-tab label="TARIFA DE AGUA"></mat-tab>
+  <!-- <mat-tab label="TARIFA DE MULTAS"></mat-tab> -->
+</mat-tab-group>
+<mat-divider></mat-divider>
+
+<body>
+  <router-outlet></router-outlet>
+</body>

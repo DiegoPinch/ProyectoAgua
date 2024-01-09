@@ -1,14 +1,10 @@
-<mat-toolbar class="custom-toolbar">
-  <div fxLayout="row" fxLayoutGap="10px">
-    <button  mat-raised-button color="accent" routerLink="cobrarFacturas" class="custom-button">
-      <mat-icon>add</mat-icon> Cobrar Facturas
-    </button>
-    <button  mat-raised-button color="accent"  routerLink="verFacturas" class="custom-button">
-      <mat-icon>edit</mat-icon> Ver Facturas
-    </button>
-  </div>
-</mat-toolbar>
+<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" (selectedTabChange)="onTabChange($event)"
+  [selectedIndex]="activeTabIndex"> <!-- Establecer el índice de la pestaña activa -->
+  <mat-tab label="COBRAR FACTURAS"></mat-tab>
+  <mat-tab label="ESTADO DE FACTURAS"></mat-tab>
+</mat-tab-group>
+<mat-divider></mat-divider>
 
 <body>
-<router-outlet></router-outlet>
+  <router-outlet></router-outlet>
 </body>

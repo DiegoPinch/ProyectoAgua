@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MetaDataColumn } from 'src/app/sharedtable/interfaces/metacolumn.interfaces';
 import { environment } from 'src/environments/environments';
 import { FechahoraService } from 'src/app/services/time/fechahora.service';
@@ -15,6 +15,7 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrls: ['./page-ingresolecturas.component.css']
 })
 export class PageIngresolecturasComponent implements OnInit {
+  
   records: any[] = [];
   mesesDelAnio: string[] = [];
   fechaActual!: Date;
@@ -37,14 +38,14 @@ export class PageIngresolecturasComponent implements OnInit {
     private _lecturaService: ServlecturasService,
     private fechaHoraService: FechahoraService,
     private dialog: MatDialog
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.getFechaHoraActual();
   }
 
   cargarDatos() {
-    this.showSpinner =true
+    this.showSpinner = true
     const opcionSeleccionada = this.selectedTipo;
     if (opcionSeleccionada) {
       this._lecturaService.getPersonaMedidor(opcionSeleccionada).subscribe((data: any[]) => {
@@ -52,10 +53,11 @@ export class PageIngresolecturasComponent implements OnInit {
         this.dataSource = new MatTableDataSource<any>(this.records);
         this.totalRecords = this.records.length;
         this.changePage(0);
-        this.showSpinner =false
+        this.showSpinner = false
       });
     }
   }
+  
   ejecutarAccion(acciones: any, rowData: any) {
     if (acciones.icon === 'input') {
       const dialogRef = this.dialog.open(IngresarEditarComponent, {
@@ -74,10 +76,18 @@ export class PageIngresolecturasComponent implements OnInit {
       });
     }
   }
+ 
+
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
-    this.dataSource.filter = filterValue;
+    const filteredData = this.records.filter(item =>
+      item.CED_USU.toLowerCase().includes(filterValue) ||
+      item.NOM_USU.toLowerCase().includes(filterValue) ||
+      item.APE_USU.toLowerCase().includes(filterValue)
+
+    );
+    this.dataSource = new MatTableDataSource<any>(filteredData);
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
@@ -95,7 +105,7 @@ export class PageIngresolecturasComponent implements OnInit {
       (data: any) => {
         this.fechaActual = new Date(data.datetime);
         this.generarMesesDelAnio();
-        this.selectedMes = this.getMesActual(); 
+        this.selectedMes = this.getMesActual();
         this.defaultMes = this.getMesActual();
         this.restarUnMes(this.selectedMes);
         this.cargarDatos();
@@ -108,14 +118,14 @@ export class PageIngresolecturasComponent implements OnInit {
   }
   esMesPosterior(mes: string): boolean {
     const añoActual = this.fechaActual.getFullYear();
-    const mesActual = this.fechaActual.getMonth() + 1; 
+    const mesActual = this.fechaActual.getMonth() + 1;
     const [añoSeleccionado, mesSeleccionado] = mes.split('-');
     const mesSeleccionadoNumero = obtenerNumeroDeMes(mesSeleccionado);
-  
+
     if (+añoSeleccionado > añoActual || (+añoSeleccionado === añoActual && mesSeleccionadoNumero > mesActual)) {
-      return true; 
+      return true;
     }
-  
+
     return false;
   }
   private generarMesesDelAnio() {
@@ -124,10 +134,10 @@ export class PageIngresolecturasComponent implements OnInit {
       'ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO',
       'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'
     ];
-  
+
     this.mesesDelAnio = meses.map(mes => `${año}-${mes}`);
   }
-  
+
   private getMesActual() {
     const año = this.fechaActual.getFullYear();
     const mes = this.fechaActual.getMonth();
@@ -152,13 +162,13 @@ export class PageIngresolecturasComponent implements OnInit {
       CED_USU: item.CED_USU,
       NOM_USU: item.NOM_USU,
       APE_USU: item.APE_USU,
-      ID_MED : item.ID_MED,
+      ID_MED: item.ID_MED,
       acciones: [
         { icon: 'input', tooltip: 'Ingresar Lectura', color: 'primary' },
       ]
     }));
   }
-  
+
   totalRecords = 0;
 }
 

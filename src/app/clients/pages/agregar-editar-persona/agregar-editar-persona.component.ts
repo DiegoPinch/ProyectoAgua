@@ -7,9 +7,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { IngresoEditMedidorComponent } from '../../medidores/ingreso-edit-medidor/ingreso-edit-medidor.component';
 import { Router } from '@angular/router';
 import { ServiceMedidores } from '../../medidores/service/service-medidores';
-import { MedidoresListComponent } from '../../medidores/medidores-list/medidores-list.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { AbrirDialogoComponent } from 'src/app/core/components/abrir-dialogo/abrir-dialogo.component';
+import { MensajeokComponent } from 'src/app/core/components/mensajeok/mensajeok.component';
 
 @Component({
   selector: 'gst-agregar-editar-persona',
@@ -141,10 +141,11 @@ export class AgregarEditarPersonaComponent {
     });
 
   }
+
   mensajeError(mensaje: string) {
-    const dialogRef = this.dialog.open(AbrirDialogoComponent, {
+    const dialogRef = this.dialog.open(MensajeokComponent, {
       data: {
-        title: 'Aviso',
+        title: 'Mensaje de aviso',
         message: mensaje
       }
     });
@@ -162,6 +163,7 @@ export class AgregarEditarPersonaComponent {
     this.snackBar.open(message, '', { duration })
     this.dialogRef.close(true);
   }
+
   validarNombre(control: AbstractControl): { [key: string]: any } | null {
     const nombre: string = control.value;
     if (nombre && (nombre.trim().length < 3 || !/^[a-zA-Z]+\s?[a-zA-Z]*$/.test(nombre))) {
@@ -199,6 +201,7 @@ export class AgregarEditarPersonaComponent {
       control.setValue(control.value.toUpperCase(), { emitEvent: false });
     }
   }
+  
   validarCedula(control: AbstractControl): { [key: string]: any } | null {
     const cedula = control.value;
     if (!/^\d{10}$/.test(cedula)) {

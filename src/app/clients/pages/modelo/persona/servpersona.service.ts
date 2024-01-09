@@ -28,6 +28,9 @@ export class ServpersonaService {
   getPersonas(): Observable<Persona[]> {
     return this.http.get<Persona[]>(this.myAppUrl + this.myApyUrl);
   }
+  getPersona(cedula: string): Observable<any> {
+    return this.http.get(this.myAppUrl + this.myApyUrl + cedula);
+  }
   getPersonaNormal(): Observable<any> {
     return this.http.get(this.myAppUrl + this.myApyUrl);
   }

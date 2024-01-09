@@ -1,0 +1,83 @@
+<gst-spiner [showSpinner]="showSpinner"></gst-spiner>
+<gst-container>
+    <mat-divider *ngIf="estaEditando"></mat-divider>
+    <br *ngIf="estaEditando">
+    <div *ngIf="estaEditando">
+        <!-- Formulario para editar la fila con diseño de Angular Material -->
+        <form fxLayout="row" fxLayoutGap="10px">
+            <mat-form-field appearance="outline">
+                <mat-label>Tipo de Servicio</mat-label>
+                <input #inputMedidor matInput [(ngModel)]="filaSeleccionada.tip_serv" name="tip_serv" [readonly]="true">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Valor Básico</mat-label>
+                <input matInput [(ngModel)]="filaSeleccionada.basico" name="basico" 
+                       inputmode="decimal" pattern="^\d+(\.\d+)?$" (input)="validarInput($event, 'basico')">
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline">
+                <mat-label>Valor Exceso</mat-label>
+                <input matInput [(ngModel)]="filaSeleccionada.exceso" name="exceso" 
+                       inputmode="decimal" pattern="^\d+(\.\d+)?$" (input)="validarInput($event, 'exceso')">
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline">
+                <mat-label>Metros Cúbicos</mat-label>
+                <input matInput [(ngModel)]="filaSeleccionada.met_cubicos" name="met_cubicos" 
+                       inputmode="decimal" pattern="^\d+(\.\d+)?$" (input)="validarInput($event, 'met_cubicos')">
+              </mat-form-field>
+
+            <button mat-raised-button color="primary" (click)="guardarEdicion()" [disabled]="!formularioValido()" >Guardar</button>
+            <button mat-raised-button color="warn" (click)="cancelarEdicion()">Cancelar</button>
+        </form>
+    </div>
+    <mat-divider *ngIf="estaEditando"></mat-divider>
+    <br *ngIf="estaEditando">
+    <table mat-table [dataSource]="dataSource" >
+        <!-- Definir las columnas -->
+        <ng-container matColumnDef="tip_serv">
+            <th mat-header-cell *matHeaderCellDef> TIPO DE SERVICIO </th>
+            <td mat-cell *matCellDef="let elemento"> {{elemento.tip_serv}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="basico">
+            <th mat-header-cell *matHeaderCellDef> VALOR BÁSICO </th>
+            <td mat-cell *matCellDef="let elemento"> {{elemento.basico}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="exceso">
+            <th mat-header-cell *matHeaderCellDef> VALOR EXCESO </th>
+            <td mat-cell *matCellDef="let elemento"> {{elemento.exceso}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="met_cubicos">
+            <th mat-header-cell *matHeaderCellDef> METROS CÚBICOS </th>
+            <td mat-cell *matCellDef="let elemento"> {{elemento.met_cubicos}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="fec_crea">
+            <th mat-header-cell *matHeaderCellDef> FECHA CREACIÓN </th>
+            <td mat-cell *matCellDef="let elemento"> {{elemento.fec_crea}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="fec_upda">
+            <th mat-header-cell *matHeaderCellDef> FECHA ACTUALIZACIÓN </th>
+            <td mat-cell *matCellDef="let elemento"> {{elemento.fec_upda}} </td>
+        </ng-container>
+
+        <!-- Columna para el botón de editar -->
+        <ng-container matColumnDef="editar">
+            <th mat-header-cell *matHeaderCellDef> ACCIONES </th>
+            <td mat-cell *matCellDef="let fila">
+                <button mat-icon-button (click)="editarFilaSeleccionada(fila)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+        <tr mat-row *matRowDef="let fila; columns: columnas;"></tr>
+    </table>
+
+</gst-container>

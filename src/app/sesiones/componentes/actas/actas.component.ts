@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { EditarComponent } from 'src/app/lecturas/page/editar/editar.component';
 import { MetaDataColumn } from 'src/app/sharedtable/interfaces/metacolumn.interfaces';
 import { environment } from 'src/environments/environments';
 import { ActasService } from '../../serve/actas.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { DomSanitizer,SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'gst-actas',
@@ -13,18 +15,22 @@ import { ActasService } from '../../serve/actas.service';
 })
 export class ActasComponent {
   records: any[] = [];
+  links: { [key: string]: string } = {}; // Objeto para almacenar los enlaces
+
   formulario: FormGroup;
   selectedFileName!: string;
   data: any[] = [];
+
   metaDataColumns: MetaDataColumn[] = [
     { field: "ID_ACT", title: "ID" },
     { field: "DOCUMENTO", title: "DOCUMENTO" },
     { field: "OBSERVACION", title: "OBSERVACION" },
     { field: "acciones", title: "ACCIONES" }
   ];
-  constructor(private fb: FormBuilder, private _actasService: ActasService, private dialog: MatDialog) {
+
+  constructor(private renderer: Renderer2,private fb: FormBuilder, private _actasService: ActasService, private dialog: MatDialog, private snackBar: MatSnackBar) {
     this.formulario = this.fb.group({
-      ID_SESION_ACT: [null, Validators.required],
+      ID_SESION_ACT: ["1", Validators.required],
       DOCUMENTO: [null, Validators.required],
       OBSERVACION: [null, Validators.maxLength(50)],
     });
@@ -33,9 +39,9 @@ export class ActasComponent {
   }
 
   ngOnInit() {
-    
-   }
-   
+
+  }
+
   onFileSelected(event: any): void {
     const file: File = event.target.files[0];
     if (file) {
@@ -44,12 +50,18 @@ export class ActasComponent {
       });
     }
   }
+
   cargarDatos() {
     this._actasService.getActas().subscribe((data: any[]) => {
       this.records = data.map(item => {
+        const blob = new Blob([new Uint8Array(item.DOCUMENTO.data)], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        const linkKey = `link_${item.ID_ACT}`; // Generar una clave única para cada enlace
+        this.links[linkKey] = url; // Guardar el enlace en el objeto links
+
         return {
           ID_ACT: item.ID_ACT,
-          DOCUMENTO: item.DOCUMENTO,
+          DOCUMENTO: linkKey, // Usar la clave como referencia al enlace
           OBSERVACION: item.OBSERVACION,
           acciones: [
             { icon: 'edit', tooltip: 'Editar Acta', color: 'primary' },
@@ -58,10 +70,24 @@ export class ActasComponent {
         };
       });
       this.totalRecords = this.records.length;
-      this.changePage(0); // Llama a changePage después de cargar los datos
+      this.changePage(0);
     });
-
   }
+
+  obtenerEnlaceDescarga(clave: string): string {
+    return this.links[clave] || ''; // Obtener el enlace basado en la clave
+  }
+
+  
+  generarURLDescarga(datos: any): string {
+    const blob = new Blob([new Uint8Array(datos.data)], { type: 'application/pdf' });
+    return URL.createObjectURL(blob);
+  }
+  generarEnlaceDescarga(url: string): string {
+    return `<a href="${url}" download="documento.pdf">Descargar/Ver</a>`;
+  }
+  
+  
   guardar(): void {
     const actaDatas = {
       ID_SESION_ACT: this.formulario.value.ID_SESION_ACT,
@@ -70,7 +96,7 @@ export class ActasComponent {
     };
     this._actasService.postActas(actaDatas).subscribe(
       (response) => {
-        console.log('Datos insertados con éxito');
+        this.showMessage('Datos insertados con éxito')
         this.cargarDatos();
       },
       (error) => {
@@ -82,9 +108,8 @@ export class ActasComponent {
   ejecutarAccion(acciones: any, rowData: any) {
     if (acciones.icon === 'edit') {
       console.log('Editando fila:', rowData);
-
       const dialogRef = this.dialog.open(EditarComponent, {
-        width: '300px',
+        width: '700px',
         data: {
           cedula: rowData.CED_USU,
           lecActual: rowData.LEC_ACT, // Pasa la cédula como parte de los datos
@@ -92,23 +117,19 @@ export class ActasComponent {
           metodo: this.cargarDatos()
         }
       });
-
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
-          console.log('Hola:', result);
           this.cargarDatos();
+          this.showMessage("Editado con éxito")
         }
       });
     } else if (acciones.icon === 'delete') {
       console.log('Eliminando fila:', rowData);
-
-      // Aquí puedes agregar la lógica para confirmar y realizar la eliminación
       const confirmarEliminacion = window.confirm('¿Estás seguro de que deseas eliminar esta fila?');
-
       if (confirmarEliminacion) {
         this._actasService.deleteActas(rowData.ID_ACT).subscribe(
           (response) => {
-            console.log('ELIMINADO éxito');
+            this.showMessage("Eliminado con éxito")
             this.cargarDatos();
           },
           (error) => {
@@ -128,4 +149,9 @@ export class ActasComponent {
     const skip = pageSize * page
     this.data = this.records.slice(skip, skip + pageSize)
   }
+
+  showMessage(message: string, duration: number = 5000) {
+    this.snackBar.open(message, '', { duration })
+  }
+
 }
