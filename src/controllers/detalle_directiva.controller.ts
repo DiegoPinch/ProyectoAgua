@@ -1,11 +1,18 @@
 import { Request, Response } from 'express';
 import connection from '../db/connection';
 
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 export const postDetalleDirectiva = async (req: Request, resp: Response) => {
     const { body } = req;
     try {
-        connection.query('INSERT INTO DETALLE_DIRECTIVA SET ?', [body], (err, data) => {
+        // Generar el hash de la contraseña
+        const hash = await bcrypt.hash(body.CONTRASENA, saltRounds);
+        // Usar el hash en lugar de la contraseña original
+        const datosConHash = { ...body, CONTRASENA: hash };
+
+        connection.query('INSERT INTO DETALLE_DIRECTIVA SET ?', [datosConHash], (err, data) => {
             if (err) {
                 console.error('Error al insertar datos:', err);
                 resp.status(500).json({

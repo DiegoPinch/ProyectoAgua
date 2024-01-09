@@ -8,6 +8,7 @@ import actas from '../routes/actas.routes';
 import detalledirectivas from '../routes/detalle_directiva.routes';
 import loginUsuario from '../routes/loginUsuarios.routes';
 import medidores from '../routes/medidores.routes';
+import tarifaAgua from '../routes/tarifaAgua.routes';
 import connection from '../db/connection';
 import cors from 'cors';
 
@@ -38,6 +39,7 @@ class Server {
         this.app.use('/api/detalledirectivas', detalledirectivas)
         this.app.use('/api/loginusuarios', loginUsuario) //login usuarios
         this.app.use('/api/medidores', medidores);
+        this.app.use('/api/tarifaagua', tarifaAgua);
     }
 
     //para imprir json

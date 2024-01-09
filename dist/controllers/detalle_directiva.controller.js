@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -41,32 +52,44 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteDetalleDirectiva = exports.getDetalleDirectiva = exports.postDetalleDirectiva = void 0;
 var connection_1 = __importDefault(require("../db/connection"));
+var bcrypt = require('bcrypt');
+var saltRounds = 10;
 var postDetalleDirectiva = function (req, resp) { return __awaiter(void 0, void 0, void 0, function () {
-    var body;
+    var body, hash, datosConHash, err_1;
     return __generator(this, function (_a) {
-        body = req.body;
-        try {
-            connection_1.default.query('INSERT INTO DETALLE_DIRECTIVA SET ?', [body], function (err, data) {
-                if (err) {
-                    console.error('Error al insertar datos:', err);
-                    resp.status(500).json({
-                        error: 'Error al insertar datos en la base de datos',
-                    });
-                }
-                else {
-                    resp.status(200).json({
-                        msg: 'Datos insertados con éxito',
-                    });
-                }
-            });
+        switch (_a.label) {
+            case 0:
+                body = req.body;
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, bcrypt.hash(body.CONTRASENA, saltRounds)];
+            case 2:
+                hash = _a.sent();
+                datosConHash = __assign(__assign({}, body), { CONTRASENA: hash });
+                connection_1.default.query('INSERT INTO DETALLE_DIRECTIVA SET ?', [datosConHash], function (err, data) {
+                    if (err) {
+                        console.error('Error al insertar datos:', err);
+                        resp.status(500).json({
+                            error: 'Error al insertar datos en la base de datos',
+                        });
+                    }
+                    else {
+                        resp.status(200).json({
+                            msg: 'Datos insertados con éxito',
+                        });
+                    }
+                });
+                return [3 /*break*/, 4];
+            case 3:
+                err_1 = _a.sent();
+                console.error('Error al insertar datos:', err_1);
+                resp.status(500).json({
+                    error: 'Error al insertar datos en la base de datos',
+                });
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
         }
-        catch (err) {
-            console.error('Error al insertar datos:', err);
-            resp.status(500).json({
-                error: 'Error al insertar datos en la base de datos',
-            });
-        }
-        return [2 /*return*/];
     });
 }); };
 exports.postDetalleDirectiva = postDetalleDirectiva;

@@ -41,17 +41,43 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.loginUsuario = exports.getAdministracion = void 0;
 var connection_1 = __importDefault(require("../db/connection"));
-var getAdministracion = function (req, resp) { return __awaiter(void 0, void 0, void 0, function () {
+var bcrypt_1 = __importDefault(require("bcrypt"));
+var getAdministracion = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var cedula, contra, sqlQuery;
     return __generator(this, function (_a) {
         cedula = req.params.cedula;
         contra = req.params.contra;
-        sqlQuery = "\n    SELECT D.*, U.*\n    FROM DETALLE_DIRECTIVA D, USUARIOS U\n    WHERE U.CED_USU= D.CED_USU_DIR\n    AND D.ESTADO= 'Activo'\n    AND D.CED_USU_DIR = ?\n    AND D.CONTRASENA =?\n    ";
-        connection_1.default.query(sqlQuery, [cedula, contra], function (err, data) {
-            if (err)
-                throw err;
-            resp.json(data);
-        });
+        try {
+            sqlQuery = "\n        SELECT U.*, D.CONTRASENA, D.CARGO\n        FROM DETALLE_DIRECTIVA D, USUARIOS U\n        WHERE U.CED_USU = D.CED_USU_DIR\n        AND D.ESTADO = 'Activo'\n        AND D.CED_USU_DIR = ?\n        ";
+            connection_1.default.query(sqlQuery, [cedula], function (err, data) { return __awaiter(void 0, void 0, void 0, function () {
+                var usuario, contrasenaAlmacenada, contrasenaValida;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            if (err) {
+                                console.error('Error al obtener datos del usuario:', err);
+                                return [2 /*return*/, res.status(500).json({ error: 'Error al obtener datos del usuario' })];
+                            }
+                            if (data.length === 0) {
+                                return [2 /*return*/, res.status(401).json({ error: 'Usuario no encontrado' })];
+                            }
+                            usuario = data[0];
+                            contrasenaAlmacenada = usuario.CONTRASENA;
+                            return [4 /*yield*/, bcrypt_1.default.compare(contra, contrasenaAlmacenada)];
+                        case 1:
+                            contrasenaValida = _a.sent();
+                            if (!contrasenaValida) {
+                                return [2 /*return*/, res.status(401).json({ error: 'Contraseña incorrecta' })];
+                            }
+                            return [2 /*return*/, res.status(200).json(usuario)];
+                    }
+                });
+            }); });
+        }
+        catch (error) {
+            console.error('Error al iniciar sesión:', error);
+            return [2 /*return*/, res.status(500).json({ error: 'Error en el servidor al iniciar sesión' })];
+        }
         return [2 /*return*/];
     });
 }); };
@@ -61,7 +87,7 @@ var loginUsuario = function (req, resp) { return __awaiter(void 0, void 0, void 
     return __generator(this, function (_a) {
         cedula = req.params.cedula;
         contra = req.params.contra;
-        sqlQuery = "\n    SELECT * FROM USUARIOS WHERE CED_USU = ? AND CONTRASENA = ?\n    ";
+        sqlQuery = "\n    SELECT *  FROM USUARIOS WHERE ESTADO = 'ACTIVO' AND CED_USU = ? AND CONTRASENA = ?\n    ";
         connection_1.default.query(sqlQuery, [cedula, contra], function (err, data) {
             if (err)
                 throw err;

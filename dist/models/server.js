@@ -13,6 +13,7 @@ var actas_routes_1 = __importDefault(require("../routes/actas.routes"));
 var detalle_directiva_routes_1 = __importDefault(require("../routes/detalle_directiva.routes"));
 var loginUsuarios_routes_1 = __importDefault(require("../routes/loginUsuarios.routes"));
 var medidores_routes_1 = __importDefault(require("../routes/medidores.routes"));
+var tarifaAgua_routes_1 = __importDefault(require("../routes/tarifaAgua.routes"));
 var connection_1 = __importDefault(require("../db/connection"));
 var cors_1 = __importDefault(require("cors"));
 var Server = /** @class */ (function () {
@@ -40,6 +41,7 @@ var Server = /** @class */ (function () {
         this.app.use('/api/detalledirectivas', detalle_directiva_routes_1.default);
         this.app.use('/api/loginusuarios', loginUsuarios_routes_1.default); //login usuarios
         this.app.use('/api/medidores', medidores_routes_1.default);
+        this.app.use('/api/tarifaagua', tarifaAgua_routes_1.default);
     };
     //para imprir json
     Server.prototype.middlewares = function () {

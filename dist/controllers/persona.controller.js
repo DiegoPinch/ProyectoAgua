@@ -64,13 +64,15 @@ var getPersonaPasiva = function (req, resp) { return __awaiter(void 0, void 0, v
 }); };
 exports.getPersonaPasiva = getPersonaPasiva;
 var getPersona = function (req, resp) { return __awaiter(void 0, void 0, void 0, function () {
-    var id;
+    var id, searchTerm, query;
     return __generator(this, function (_a) {
         id = req.params.id;
-        connection_1.default.query('SELECT * FROM USUARIOS WHERE CED_USU = ?', id, function (err, data) {
+        searchTerm = "%".concat(id, "%");
+        query = "\n    SELECT * FROM USUARIOS \n    WHERE ESTADO = 'ACTIVO'\n    AND (CED_USU LIKE ? OR NOM_USU LIKE ? OR APE_USU LIKE ?)\n  ";
+        connection_1.default.query(query, [searchTerm, searchTerm, searchTerm], function (err, data) {
             if (err)
                 throw err;
-            resp.json(data[0]);
+            resp.json(data);
         });
         return [2 /*return*/];
     });

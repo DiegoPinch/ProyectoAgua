@@ -38,12 +38,12 @@ export const generarFactura = (req: Request, res: Response) => {
         // Tamaño de fuente y márgenes adecuados
         const fontSize = 5;
         const marginLeft = 10;
-        const marginTop = 10;
+        const marginTop = 15;
 
         // Dibujar la información de la empresa
         doc
             .fontSize(fontSize)
-            .text('                                 NOMBRE EMPRESA', marginLeft, marginTop)
+            .text('    JUNTA ADMINISTRADORA DE AGUA POTABLE', marginLeft, marginTop, { align: 'center' })
             .text('Dirección de la Empresa', marginLeft, marginTop + fontSize)
             .text('RUC de la Empresa', marginLeft, marginTop + 2 * fontSize);
 
@@ -94,7 +94,7 @@ export const generarFactura = (req: Request, res: Response) => {
             .fontSize(4)
             .text(`-----------------------------------------------------------------------------------------------------------------------------------------`,
              marginLeft, tableTop + (table.items.length + 1) * rowHeight, 
-             { width: columnWidth * 6, align: 'left' });
+             { width: columnWidth * 7, align: 'left' });
         // Mostrar el valor total debajo de la última fila de la tabla
         doc
             .fontSize(4)
@@ -106,13 +106,11 @@ export const generarFactura = (req: Request, res: Response) => {
             .fontSize(4)
             .text(`----------------------------------------------------------------------------------------------------------------------------------------`,
              marginLeft, tableTop + (table.items.length + 3) * rowHeight, 
-             { width: columnWidth * 6, align: 'left' });
+             { width: columnWidth * 7, align: 'left' });
 
         doc
             .fontSize(4)
             .text(`Cliente: ${cliente.NOM_USU} ${cliente.APE_USU}`, marginLeft, tableTop + (table.items.length + 4) * rowHeight, { width: columnWidth * 4, align: 'left' });
-
-        // Finalizar y enviar el PDF al cliente
 
         doc.end();
     });

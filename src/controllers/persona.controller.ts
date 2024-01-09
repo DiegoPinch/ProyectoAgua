@@ -20,13 +20,26 @@ export const getPersonaPasiva = async(req: Request, resp: Response) => {
 
 }
 
-export const getPersona = async(req: Request, resp: Response) => {
+export const getPersona = async (req: Request, resp: Response) => {
   const { id } = req.params;
-  connection.query('SELECT * FROM USUARIOS WHERE CED_USU = ?', id, (err, data) => {
-    if (err) throw err;
-    resp.json(data[0]);
-  })
-}
+  const searchTerm = `%${id}%`;
+
+  const query = `
+    SELECT * FROM USUARIOS 
+    WHERE ESTADO = 'ACTIVO'
+    AND (CED_USU LIKE ? OR NOM_USU LIKE ? OR APE_USU LIKE ?)
+  `;
+
+  connection.query(
+    query,
+    [searchTerm, searchTerm, searchTerm],
+    (err, data) => {
+      if (err) throw err;
+      resp.json(data);
+    }
+  );
+};
+
 
 export const deletePersona = async(req: Request, resp: Response) => {
 

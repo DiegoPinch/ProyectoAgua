@@ -26,11 +26,11 @@ var generarFactura = function (req, res) {
         // Tamaño de fuente y márgenes adecuados
         var fontSize = 5;
         var marginLeft = 10;
-        var marginTop = 10;
+        var marginTop = 15;
         // Dibujar la información de la empresa
         doc
             .fontSize(fontSize)
-            .text('                                 NOMBRE EMPRESA', marginLeft, marginTop)
+            .text('    JUNTA ADMINISTRADORA DE AGUA POTABLE', marginLeft, marginTop, { align: 'center' })
             .text('Dirección de la Empresa', marginLeft, marginTop + fontSize)
             .text('RUC de la Empresa', marginLeft, marginTop + 2 * fontSize);
         // Ajustar la posición vertical de la tabla
@@ -71,7 +71,7 @@ var generarFactura = function (req, res) {
         var valorTotal = results.reduce(function (total, row) { return total + row.SUM_TOTAL; }, 0);
         doc
             .fontSize(4)
-            .text("-----------------------------------------------------------------------------------------------------------------------------------------", marginLeft, tableTop + (table.items.length + 1) * rowHeight, { width: columnWidth * 6, align: 'left' });
+            .text("-----------------------------------------------------------------------------------------------------------------------------------------", marginLeft, tableTop + (table.items.length + 1) * rowHeight, { width: columnWidth * 7, align: 'left' });
         // Mostrar el valor total debajo de la última fila de la tabla
         doc
             .fontSize(4)
@@ -80,11 +80,10 @@ var generarFactura = function (req, res) {
         var cliente = results[0]; // Suponiendo que los detalles del cliente están en la primera fila de resultados
         doc
             .fontSize(4)
-            .text("----------------------------------------------------------------------------------------------------------------------------------------", marginLeft, tableTop + (table.items.length + 3) * rowHeight, { width: columnWidth * 6, align: 'left' });
+            .text("----------------------------------------------------------------------------------------------------------------------------------------", marginLeft, tableTop + (table.items.length + 3) * rowHeight, { width: columnWidth * 7, align: 'left' });
         doc
             .fontSize(4)
             .text("Cliente: ".concat(cliente.NOM_USU, " ").concat(cliente.APE_USU), marginLeft, tableTop + (table.items.length + 4) * rowHeight, { width: columnWidth * 4, align: 'left' });
-        // Finalizar y enviar el PDF al cliente
         doc.end();
     });
 };
