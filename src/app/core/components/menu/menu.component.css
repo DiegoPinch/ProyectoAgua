@@ -1,16 +1,8 @@
-mat-nav-list {
-  width: 95%;
-  height: calc(100vh - 64px);
-}
 
-mat-list-item {
-  margin-top: 7px;
-
-}
 
 span {
   display: inline-block;
-  padding-left: 15px;
+  padding-left: 20px;
   font-size: 15px;
   font-weight: 500;
   text-transform: uppercase;
@@ -18,9 +10,10 @@ span {
   font-weight: bold;
 }
 
-
-mat-list-item {
-  border-bottom: 1px solid #ddd;
+.cerrar{
+  margin: 16px;
+  color: rgba(0, 0, 0, 0.54);
+  background-color: rgb(236, 244, 214);
 }
 /*
 .menu-title.clicked {
@@ -30,17 +23,22 @@ mat-list-item {
 
 /* Estilos para el efecto hover */
 .menu-button:hover .menu-title {
-  color: #3f51b5;
+  color: #4a4b50;
   /* Cambia '#3f51b5' por el color deseado en el hover */
 }
 
 mat-list-item:hover {
-  background-color: #C5CAE9;
+  background-color: #E0E0E0 !important;
 }
 
-/*
+
 mat-list-item.clicked {
-  background-color: #C5CAE9;
-   Color de fondo cuando está seleccionado o activo 
+  background-color: rgba(161, 157, 157, 0.54);
+   
 }
-*/
+
+
+/* Quitar sombras y bordes del panel */
+.mat-expansion-panel {
+  box-shadow: none !important;
+}

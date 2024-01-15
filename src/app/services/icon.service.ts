@@ -18,6 +18,7 @@ export class IconService {
     { name: "facturas", path: "../assets/img/facturas.svg" },
     { name: "sesiones", path: "../assets/img/sesiones.svg" },
     { name: "administracion", path: "../assets/img/administracion.svg" },
+    { name: "dashboard", path: "../assets/img/dashboard.svg"},
   ];
   
   constructor(private matIconRegistry: MatIconRegistry,

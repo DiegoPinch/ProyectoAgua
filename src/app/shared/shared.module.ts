@@ -34,6 +34,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {MatTabsModule} from '@angular/material/tabs';
 import { MatTreeModule } from '@angular/material/tree';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatBadgeModule} from '@angular/material/badge';
 @NgModule({
   declarations: [
   
@@ -67,7 +69,7 @@ import { MatTreeModule } from '@angular/material/tree';
     NgScrollbar,
     MatCheckboxModule,
     MatSnackBarModule,
-    MatProgressSpinnerModule,MatTabsModule, MatTreeModule
+    MatProgressSpinnerModule,MatTabsModule, MatTreeModule,  MatExpansionModule, MatBadgeModule
     
   ],
   exports: [
@@ -99,7 +101,7 @@ import { MatTreeModule } from '@angular/material/tree';
     MatCheckboxModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
-    MatTabsModule, MatTreeModule
+    MatTabsModule, MatTreeModule, MatExpansionModule, MatBadgeModule
   ]
 })
 export class SharedModule { }

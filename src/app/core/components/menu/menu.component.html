@@ -1,5 +1,6 @@
+
 <mat-nav-list fxLayout="column" fxLayoutAlign="space-between">
-  <div>
+  <div class=" menu">
     <mat-list>
       <ng-container *ngFor="let menu of listMenu">
         <mat-list-item class="menu-item" (click)="onButtonClick(menu.url)" [class.clicked]="menu.url === activeButton">
@@ -13,12 +14,15 @@
       </ng-container>
     </mat-list>
   </div>
+
   <div>
-    <mat-list-item>
-      <button mat-icon-button color="accent" (click)="toggleExpanded()">
-        <mat-icon *ngIf="expanded">arrow_back_ios</mat-icon>
-        <mat-icon *ngIf="!expanded">arrow_forward_ios</mat-icon>
-      </button>
-    </mat-list-item>
-  </div>
+    <button class="cerrar" mat-icon-button color="accent" (click)="toggleExpanded()">
+      <mat-icon *ngIf="expanded">arrow_back_ios</mat-icon>
+      <mat-icon *ngIf="!expanded">arrow_forward_ios</mat-icon>
+    </button>
+</div>
+
 </mat-nav-list>
+
+
+

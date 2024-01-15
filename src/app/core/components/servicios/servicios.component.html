@@ -1,16 +1,40 @@
 <gst-header></gst-header>
 <mat-sidenav-container autosize="true">
-    <mat-sidenav [opened]="this.authService.obtenerUsuario() !== null" mode="side">
-        <div class="logo" fxLayout fxLayoutGap="20px" fxLayoutAlign="start center">
-            <button mat-icon-button class="example-icon"  (click)="abrirComponente()">
-                <mat-icon>
-                    settings
-                </mat-icon>
-            </button>
-            <h3 *ngIf="expanded">SISTEMA DE GESTIÓN</h3>
+    
+        <mat-sidenav [opened]="this.authService.obtenerUsuario() !== null" mode="side">
+            <div class="prueba">
+            <div class="logo" fxLayout fxLayoutAlign="start center">
+                <button mat-icon-button class="example-icon">
+                    <mat-icon>
+                        water_drop
+                    </mat-icon>
+                </button>
+                <h3 *ngIf="expanded">JAAP DevDart</h3>
+            </div>
+    
+            <mat-divider></mat-divider>
+            <div class="logo" fxLayout fxLayoutAlign="start center">
+                <button mat-icon-button class="example-icon">
+                    <mat-icon>
+                        account_circle
+                    </mat-icon>
+                </button>
+                <h3 *ngIf="expanded">{{ this.authService.obtenerUsuario()?.nombre }}</h3>
+            </div>
+            <mat-divider></mat-divider>
+            <br>
+            
+            <mat-form-field *ngIf="expanded" class="input" appearance="outline">
+                <input matInput placeholder="Buscar...">
+                <button mat-button matSuffix >
+                    <mat-icon>search</mat-icon>
+                </button>
+            </mat-form-field>
+            
+            <gst-menu (onToggleExpanded)="toggleExpanded($event)"></gst-menu>
+            
         </div>
-        <gst-menu (onToggleExpanded)="toggleExpanded($event)"></gst-menu>
-    </mat-sidenav>
+        </mat-sidenav>
     <mat-sidenav-content>
         <router-outlet></router-outlet>
     </mat-sidenav-content>

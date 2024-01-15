@@ -1,10 +1,10 @@
 @import "~@fortawesome/fontawesome-free/css/all.css";
 
 footer {
-    background-color: rgb(63, 81, 181);
+    background-color: rgb(45, 149, 150);
     color: #fff;
-    text-align: center;
-    padding: 20px;
+    text-align: center ;
+    padding: 3px;
 }
 
 .social-icons a {
@@ -15,9 +15,9 @@ footer {
 }
 
 .social-icons a:hover {
-    color: #007bff;
+    color: #44484c;
 }
 
 p {
-    margin-top: 20px;
+    margin-top: 2px;
 }

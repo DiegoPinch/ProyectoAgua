@@ -4,9 +4,10 @@ mat-sidenav-content {
 
 mat-sidenav {
   max-width: 275px;
-  
 }
-
+ .prueba{
+  height: calc(100vh - 64px);
+ }
 .logo {
   padding: 0 20px;
   background-color: rbg(30, 33, 41);
@@ -22,4 +23,9 @@ mat-sidenav {
     text-transform: uppercase;
     color: rgba(0, 0, 0, 0.54);
     font-weight: bold;
+}
+
+.input{
+ width: 85%;
+ margin-left: 10%;
 }

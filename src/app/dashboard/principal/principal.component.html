@@ -1,0 +1,13 @@
+<div class="container">
+  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" (selectedTabChange)="onTabChange($event)"
+    [selectedIndex]="activeTabIndex">
+
+    <mat-tab label="DASHBOARD FACTURAS"></mat-tab>
+  </mat-tab-group>
+
+  <mat-divider></mat-divider>
+
+  <body>
+    <router-outlet></router-outlet>
+  </body>
+</div>

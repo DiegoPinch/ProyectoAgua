@@ -1,12 +1,12 @@
 <header>
-    <mat-toolbar color="primary" class="fixed-header">
-        <button mat-flat-button color="primary" class="larger-button" [routerLink]="'inicio'"
+    <mat-toolbar  class="fixed-header">
+        <button mat-flat-button  class="larger-button" [routerLink]="'inicio'"
             (click)="onButtonClick('inicio')" [class.clicked]="activeButton === 'inicio'">Inicio</button>
 
-        <button mat-flat-button color="primary" class="larger-button" [routerLink]="'nosotros'"
+        <button mat-flat-button  class="larger-button" [routerLink]="'nosotros'"
             (click)="onButtonClick('nosotros')" [class.clicked]="activeButton === 'nosotros'">Nosotros</button>
 
-        <button mat-flat-button color="primary" class="larger-button" [routerLink]="'servicios'"
+        <button mat-flat-button  class="larger-button" [routerLink]="'servicios'"
             (click)="onButtonClick('servicios')" [class.clicked]="activeButton === 'servicios'">Servicios</button>
 
     </mat-toolbar>

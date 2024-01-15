@@ -12,6 +12,7 @@
     background-color: whitesmoke;
    
   }
+  
   .mat-list-item-content:hover {
     background-color: #958989; /* Cambia el color de fondo al pasar el ratón por encima */
     cursor: pointer; /* Cambia el cursor al pasar el ratón por encima */
@@ -20,13 +21,9 @@
   .boton-cobrar-container {
     text-align: right; /* Alinea el botón a la derecha */
     margin-top: 20px; /* Agrega espacio superior según tus necesidades */
+    
   }
 
-
-  .icon-grande {
-    font-size: 36px; /* Ajusta el tamaño a tu preferencia */
-  }
-  
   .nombre-apellido {
     margin: 0 20px; /* Añade espacio entre los iconos y el nombre */
     font-size: 24px; /* Ajusta el tamaño a tu preferencia */
@@ -35,13 +32,13 @@
     font-weight: bold;
   }
 
-  .small-icon {
-    font-size: 18px; /* Ajusta este valor a tu preferencia */
-    height: 18px; /* Asegúrate de que este valor sea el mismo que el de font-size */
-    width: 18px; /* Asegúrate de que este valor sea el mismo que el de font-size */
-  }
+
   p{
     padding-left: 20px;
   }
   
+  .botones{
+    background-color: rgb(45, 149, 150) !important;
+    color: white !important;
+  }
   

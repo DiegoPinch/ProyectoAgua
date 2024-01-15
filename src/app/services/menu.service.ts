@@ -28,6 +28,9 @@ export class MenuService {
     {
       title: 'Administración', url: '/servicios/administracion', icon: 'administracion'
     },
+    {
+      title: 'Dashboard', url: '/servicios/dashboard', icon: 'dashboard'
+    },
     
   ];
   constructor() { }

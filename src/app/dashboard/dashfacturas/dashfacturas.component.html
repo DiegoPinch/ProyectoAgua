@@ -1,0 +1,56 @@
+
+<gst-spiner [showSpinner]="showSpinner"></gst-spiner>
+
+<div fxLayout="column">
+    <div class="botones" fxLayout="row" fxLayoutGap="10px">
+        <mat-form-field appearance="outline">
+            <mat-label>Selecciona el tipo</mat-label>
+            <mat-select [(ngModel)]="selectedTipo">
+                <mat-option *ngFor="let option of optionsT" [value]="option">{{ option }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Selecciona el estado</mat-label>
+            <mat-select [(ngModel)]="selectedEstado">
+                <mat-option *ngFor="let option of optionsE" [value]="option">{{ option }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Selecciona el año</mat-label>
+            <mat-select [(ngModel)]="selectedAnio">
+                <mat-option *ngFor="let option of optionsA" [value]="option">{{ option }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <button mat-flat-button color="primary" (click)="cargarDatos()">
+            <mat-icon>bar_chart</mat-icon>
+            Aceptar
+        </button>
+    </div>
+    <mat-divider></mat-divider>
+
+    <div class="container" >
+        <div class="item">
+            <mat-card class="card">
+                <mat-card-header>
+                    <mat-card-title>Dashboard</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <canvas id="chart">{{ chart }}</canvas>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div class="item">
+            <mat-card class="card">
+                <mat-card-header>
+                    <mat-card-title>Dashboard</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <canvas id="chartUno">{{ chartUno }}</canvas>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>
+
+
+

@@ -1,8 +1,9 @@
-import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FechahoraService } from 'src/app/services/time/fechahora.service';
 import { AuthService } from '../../serve/auth.service';
 import { Router } from '@angular/router';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { MatExpansionPanel } from '@angular/material/expansion';
 
 @Component({
   selector: 'gst-header',
@@ -63,6 +64,11 @@ export class HeaderComponent implements OnInit {
 
     localStorage.removeItem('tarifaRiego');
     localStorage.removeItem('tarifaConsumo');
+  }
+
+  abrirComponente(): void {
+    
+    this.router.navigate(['/servicios/configuracion']);
   }
   
 }

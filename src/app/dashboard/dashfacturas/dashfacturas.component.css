@@ -1,0 +1,37 @@
+/*
+.container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-gap: 10px;
+    padding: 15px 40px 15px 40px; 
+}
+
+.dashboard {
+    grid-row-start: 1;
+    grid-row-end: 3;
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+*/
+.botones {
+    padding: 15px 30px 15px 10px;
+}
+
+.card {
+    width: 610px !important;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 5px;
+    text-align: center;
+    align-items: center;
+}
+
+mat-card-header {
+    background-color: rgb(154, 208, 194);
+}
+
+

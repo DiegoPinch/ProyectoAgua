@@ -63,7 +63,7 @@ export class LoguinComponent implements OnInit {
     if(response.length>0){
       const usuario = response[0];
       if (tipo === 'CLIENTE') {
-        const nombre = usuario.NOM_USU + ' ' + usuario.APE_USU;
+        const nombre = usuario.NOM_USU ;
         const cedula = usuario.CED_USU;
         const cargo = 'CLIENTE';
         this.authService.iniciarSesion({ nombre, cedula, cargo });
@@ -77,7 +77,7 @@ export class LoguinComponent implements OnInit {
   procesarRespuestaAdmin(response: any, tipo: string) {
     if (response) {
       if (tipo === 'ADMINISTRADOR') {
-        const nombre = response.NOM_USU + ' ' + response.APE_USU;
+        const nombre = response.NOM_USU;
         const cedula = response.CED_USU_DIR;
         const cargo = response.CARGO;
         this.authService.iniciarSesion({ nombre, cedula, cargo });

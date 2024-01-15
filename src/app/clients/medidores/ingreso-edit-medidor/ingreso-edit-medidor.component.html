@@ -47,13 +47,14 @@
         <div fxLayout="row" fxLayoutGap="24px">
             <mat-form-field appearance="outline">
                 <mat-label>Tipo</mat-label>
-                <mat-select [(ngModel)]="selectedTipo" formControlName="TIPO_MED">
-                    <mat-option *ngFor="let option of options" [value]="option">{{ option }}</mat-option>
+                <mat-select [(ngModel)]="selectedTipo" formControlName="TIPO_MED" >
+                    <mat-option *ngFor="let option of options" [value]="option" [disabled]="!isCedulaEditable">{{ option }}</mat-option>
                 </mat-select>
             </mat-form-field>
+            
             <mat-form-field appearance="outline">
                 <mat-label>Código QR</mat-label>
-                <input type="text" matInput formControlName="CODIGO_QR">
+                <input type="text" matInput formControlName="CODIGO_QR" [readonly]="true">
             </mat-form-field>
         </div>
         <div fxLayout="row" fxLayoutGap="24px">

@@ -1,26 +1,35 @@
 <div class="login-container" fxLayout="column" fxLayoutAlign="center center">
   <h2>Sistema de Gestión de Agua Potable</h2>
   <br><br><br><br>
-  <mat-card class="larger-card">
-    <gst-spiner [showSpinner]="showSpinner"></gst-spiner>
-    <mat-card-title>Iniciar Sesión</mat-card-title>
-    <mat-card-content>
-      <form fxLayout="column" fxLayoutGap="10px" (ngSubmit)="login()">
-        <mat-form-field appearance="outline">
-          <input matInput placeholder="Ingrese la Cédula" type="text" name="username" [(ngModel)]="username" autocomplete="off">
-          <mat-icon matSuffix>email</mat-icon>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <input matInput placeholder="Ingrese la Contraseña"type="{{tooglePassword ? 'password' :   'text'}}"
-           name="password" [(ngModel)]="password" autocomplete="off" required>
-          <button mat-icon-button
-             matSuffix type="button" 
-             (click)="tooglePassword = !tooglePassword">
-                <mat-icon matSuffix>{{tooglePassword ? 'lock' :   'lock_open'}}</mat-icon>
+
+  <div fxLayout="row" class="contenido">
+    <mat-card class="card">
+      <mat-card-content class="logo">
+        
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="larger-card">
+      <gst-spiner [showSpinner]="showSpinner"></gst-spiner>
+      <mat-card-title>Iniciar Sesión</mat-card-title>
+      <mat-card-content>
+        <form fxLayout="column" fxLayoutGap="10px" (ngSubmit)="login()">
+          <mat-form-field appearance="outline">
+            <input matInput placeholder="Ingrese la Cédula" type="text" name="username" [(ngModel)]="username"
+              autocomplete="off">
+            <mat-icon matSuffix>email</mat-icon>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <input matInput placeholder="Ingrese la Contraseña" type="{{tooglePassword ? 'password' :   'text'}}"
+              name="password" [(ngModel)]="password" autocomplete="off" required>
+            <button mat-icon-button matSuffix type="button" (click)="tooglePassword = !tooglePassword">
+              <mat-icon matSuffix>{{tooglePassword ? 'lock' : 'lock_open'}}</mat-icon>
             </button>
-        </mat-form-field>
-        <button mat-raised-button color="primary" class="login-button" type="submit"  [disabled]="!areFieldsFilled()" >Ingresar</button>
-      </form>
-    </mat-card-content>
-  </mat-card>
+          </mat-form-field>
+          <button mat-raised-button class="login-button" type="submit" [disabled]="!areFieldsFilled()">Ingresar</button>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
 </div>

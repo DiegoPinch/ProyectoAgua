@@ -2,7 +2,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Subscription, timer } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { ActivityTrackerServiceService } from './activity-tracker-service.service';
 
 @Injectable({
